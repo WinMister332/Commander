@@ -32,6 +32,15 @@ namespace Commands.Processing
         {
             invoker = new CommandInvoker();
         }
+        
+        /// <summary>
+        /// Gets the pre-set invoker that is used for registering and using commands within the command processor.
+        /// </summary>
+        /// <returns>CommandInvoker - The internal command invoker.</returns>
+        public CommandInvoker GetInvoker()
+        {
+            return invoker;
+        }
 
         /// <summary>
         /// Starts the Command Processor.
@@ -61,6 +70,7 @@ namespace Commands.Processing
         string[] CommandAliases();
         void OnCommandInvoked(CommandInvoker invoker, CommandArgs args);
     }
+
     public class CommandArgs
     {
         private List<string> args = new List<string>();
