@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Commands.Processing
+namespace WMCommandFramework
 {
     public sealed class CommandUtils
     {
@@ -64,10 +64,32 @@ namespace Commands.Processing
     }
     public interface Command
     {
+        /// <summary>
+        /// The default name of the command!
+        /// </summary>
+        /// <returns>The name of the command.</returns>
         string CommandName();
+        /// <summary>
+        /// The description of the command that will display in help.
+        /// </summary>
+        /// <returns>The description of the command.</returns>
         string CommandDesc();
+        /// <summary>
+        /// The syntax of the command.
+        /// Note: Add syntax after the command as the command that was inputted is placed before the syntax.
+        /// </summary>
+        /// <returns>The syntax of the command.</returns>
         string CommandSynt();
+        /// <summary>
+        /// Alliases of the command. If this name or value is typed the same command will also run.
+        /// </summary>
+        /// <returns>Allieses for the command.</returns>
         string[] CommandAliases();
+        /// <summary>
+        /// Code that is ran when the command is invoked by the parent command invoker.
+        /// </summary>
+        /// <param name="invoker">The invoker that invoked the command.</param>
+        /// <param name="args">The argument that where processed.</param>
         void OnCommandInvoked(CommandInvoker invoker, CommandArgs args);
     }
 
@@ -112,8 +134,83 @@ namespace Commands.Processing
         /// <returns>Whether there is a switch value.</returns>
         public bool ContainsSwitch(string switch_key)
         {
-            if (args.Contains(switch_key)) return true;
+            if (args.Contains($"-{switch_key}") || args.Contains($"/{switch_key}")) return true;
             return false;
+        }
+
+        /// <summary>
+        /// Checks to see if the specified arg is anywhere in the argument stirng.
+        /// </summary>
+        /// <param name="arg">The arg to search for.</param>
+        /// <returns>Whether the arg was found.</returns>
+        public bool ContainsArg(string arg)
+        {
+            if (args.Contains(arg)) return true;
+            return false;
+        }
+
+        /// <summary>
+        /// Gets the index of the specified arg.
+        /// </summary>
+        /// <param name="arg">The arg to get the index of.</param>
+        /// <returns>The index of the specified arg.</returns>
+        public int GetIndexOfArg(String arg)
+        {
+            if (ContainsArg(arg))
+            {
+                var index = args.IndexOf(arg);
+                return index;
+            }
+            return 0;
+        }
+        
+        /// <summary>
+        /// Gets the index of the swithc witht he following name.
+        /// </summary>
+        /// <param name="switch_key">The name of the switch key.</param>
+        /// <returns>The index of the switch with the key.</returns>
+        public int GetIndexOfSwitch(string switch_key)
+        {
+            if (ContainsSwitch(switch_key))
+            {
+                if (args.Contains($"-{switch_key}"))
+                {
+                    var index = args.IndexOf($"-{switch_key}");
+                    return index;
+                }
+                else if (args.Contains($"/{switch_key}"))
+                {
+                    var index = args.IndexOf($"/{switch_key}");
+                    return index;
+                }
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// Skips the argument at the following location.
+        /// </summary>
+        /// <param name="index">The index to split from.</param>
+        /// <returns>A reformmated string array.</returns>
+        public string[] Skip(int index)
+        {
+            var x = args.ToString();
+            var l = x.Substring(index, x.Length);
+            var s = l.Split(' ');
+            var ls = new List<string>();
+            foreach (string sx in s)
+                ls.Add(sx);
+            return ls.ToArray();
+        }
+
+        /// <summary>
+        /// Skips the argument with the following name.
+        /// </summary>
+        /// <param name="arg">The string to skip from.</param>
+        /// <returns>The newly formatted string only containing the data that was skipped from.</returns>
+        public string[] Skip(string arg)
+        {
+            return Skip(GetIndexOfArg(arg));
         }
     }
 
@@ -229,7 +326,7 @@ namespace Commands.Processing
             var name = x[0];
             CommandArgs args = null;
             if (x.Length > name.Length) args = new CommandArgs();
-            else args = new CommandArgs(FormatString(x, name));
+            else args = new CommandArgs(new CommandArgs(x).Skip(name));
             var cmd = GetCommand(name);
             if (cmd == null)
             {
@@ -251,17 +348,6 @@ namespace Commands.Processing
                     return;
                 }
             }
-        }
-
-        private string[] FormatString(string[] input, string delVal)
-        {
-            List<string> x = new List<string>();
-            foreach (string _x in input)
-            {
-                if (!(_x.ToLower() == delVal.ToLower()))
-                    x.Add(_x.ToLower());
-            }
-            return x.ToArray();
         }
     }
 
