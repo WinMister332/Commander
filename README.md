@@ -15,7 +15,7 @@ public Kernel : Sys.Kernel
   //Add the command processor class.
   private static ComamndProcessor processor;
   
-  protected void BeforeRun()
+  protected override void BeforeRun()
   {
     if (processor == null) processor = new CommandProcessor();
     CommandUtils.CurrentToken = "CommandFramework"; //Adds the "CommandFramework" string in front of the command input.
@@ -25,7 +25,7 @@ public Kernel : Sys.Kernel
     processor.GetInvoker().AddCommand(new ExampleCommand()); //Registers the command created below.
   }
   
-  public void Run()
+  protected override void Run()
   {
     //Don't need to add a while loop with COSMOS as the Run method loops.
     processor.Process();
