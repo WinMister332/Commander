@@ -139,6 +139,17 @@ namespace WMCommandFramework
         }
 
         /// <summary>
+        /// Checks if there is a segmented switch anywhere in the arg array.
+        /// </summary>
+        /// <param name="segment">The segment to search for.</param>
+        /// <returns>True if the array contains the segmented switch.</returns>
+        public bool ContainsSegmentedSwitch(string segment)
+        {
+            if (args.Contains($"-{segment}:")) return true;
+            return false;
+        }
+
+        /// <summary>
         /// Checks to see if the specified arg is anywhere in the argument stirng.
         /// </summary>
         /// <param name="arg">The arg to search for.</param>
@@ -185,6 +196,30 @@ namespace WMCommandFramework
                 }
             }
             return 0;
+        }
+
+        /// <summary>
+        /// Gets the index of the segmented switch with the following segment.
+        /// </summary>
+        /// <param name="segment">The segment of the segmented switch.</param>
+        /// <returns>The segmented switch value.</returns>
+        public string GetSegmentedSwitchValue(string segment)
+        {
+            if (ContainsSegmentedSwitch(segment))
+            {
+                string data = "";
+                foreach (string segmented in args)
+                {
+                    if (segmented.StartsWith($"-{segment}:"))
+                    {
+                        var x = segmented.Split(':');
+                        data = x[1];
+                        break;
+                    }
+                }
+                return data;
+            }
+            return null;
         }
 
         /// <summary>
