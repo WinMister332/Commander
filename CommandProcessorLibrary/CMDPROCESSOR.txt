@@ -1,0 +1,70 @@
+using System;
+using Sys = Cosmos.System;
+
+using WMCommandFramework;
+
+public class Kernel : Sys.Kernel
+{
+	private static CommandProcessor processor;
+
+	protected override void BeforeRun()
+	{
+		if (processor == null) processor = new CommandProcessor();
+		CommandUtils.CurrentToken = "My OS";
+		CommandUtils.DebugMode = true; //Shows errors that are processed by my framework if any.
+		//Register your commands here.
+		
+	}
+	
+	protected override void Run()
+	{
+		processor.Process();
+	}
+}
+
+public ColorCommand : Command
+{
+	public string[] CommandAliases()
+    {
+		return new string[] { "colour", "col" };
+    }
+
+    public string CommandDesc()
+    {
+        return "Sets the terminal color.";
+    }
+
+    public string CommandName()
+    {
+        return "color";
+    }
+	   
+    public string CommandSynt()
+    {
+        return "cls";
+    }
+
+    public void OnCommandInvoked(CommandInvoker invoker, CommandArgs args)
+    {
+        //Checks to see if ANY arguments where parsed.
+		if (args.isEmpty())
+		{
+			//Display Colors/Codes.
+			
+		}
+		else if ((args.Contains("b") || args.Contains("bg"))) //Just background switch.
+		{
+		
+		}
+		else if ((args.Contains("f") || args.Contains("fg"))) //Just foreground switch.
+		{
+		
+		}
+		//Forground and background switches.
+		else if ((args.Contains("f") || args.Contains("fg")) && (args.Contains("b") || args.Contains("bg"))) 
+		{
+			//Both switches found change foreground and background.
+			
+		}
+    }
+}
