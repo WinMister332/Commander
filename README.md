@@ -1,5 +1,3 @@
-**WARNING: The previous --version push MAY be unfinhished, however, everything else should still work.**
-
 # CommandFramework
 CommandFramework is a simple command parser/invoker built in C# for the COSMOS operating system library.
 The library was built to work with COSMOS/.NET Core, however, you can use this library in any application even console applications.
