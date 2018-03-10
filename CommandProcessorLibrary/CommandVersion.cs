@@ -6,212 +6,160 @@ namespace WMCommandFramework
 {
     public class CommandVersion
     {
-        private int major = -1;
-        private int minor = -1;
-        private int build = -1;
-        private int revision = 0;
-        private string tag = "";
+        private int[] versionArr;
+        private string tag;
 
-        public CommandVersion(int major, int minor, int build, int revision, string tag = "")
+        public CommandVersion(int major, int minor, int revision, int build, string tag = "")
         {
-            this.major = major;
-            this.minor = minor;
-            this.build = build;
-            this.revision = revision;
+            if (major <= -1)
+                major = 0;
+            if (minor <= -1)
+                minor = 0;
+            if (revision <= -1)
+                revision = 0;
+            if (build <= -1)
+                build = 0;
+            int[] x = { major, minor, revision, build };
+            versionArr = x;
             this.tag = tag;
         }
 
-        public CommandVersion(int minor, int build, int revision, string tag = "")
-        {
-            new CommandVersion(-1, minor, build, revision, tag);
-        }
-
-        public CommandVersion(int build, int revision, string tag = "")
-        {
-            new CommandVersion(-1, -1, build, revision, tag);
-        }
-
-        public bool IsVersion(CommandVersion version)
-        {
-            if (version == this) return true;
-            return false;
-        }
-
-        public bool IsGreater(CommandVersion version)
-        {
-            if ((this.major > version.major && this.minor > version.minor && this.build > version.build && this.revision > version.revision) || (this.major > version.major || this.minor > version.minor || this.build > version.build || this.revision > version.revision))
-                return true;
-            return false;
-        }
-
-        public int GetMajor()
-        {
-            if (major <= -1)
-            {
-                return -1;
-            }
-            return major;
-        }
-
-        public int GetMinor()
+        public CommandVersion(int minor, int revision, int build, string tag = "")
         {
             if (minor <= -1)
-            {
-                return -1;
-            }
-            return minor;
-        }
-
-        public int GetBuild()
-        {
+                minor = 0;
+            if (revision <= -1)
+                revision = 0;
             if (build <= -1)
-            {
-                return -1;
-            }
-            return build;
+                build = 0;
+            int[] x = { minor, revision, build };
+            versionArr = x;
+            this.tag = tag;
         }
 
-        public int GetRevision()
+        public CommandVersion(int revision, int build, string tag = "")
         {
             if (revision <= -1)
-            {
-                return -1;
-            }
-            return revision;
+                revision = 0;
+            if (build <= -1)
+                build = 0;
+            int[] x = { revision, build };
+            versionArr = x;
+            this.tag = tag;
         }
 
-        public string GetTag()
+        public int Major
         {
-            if (tag == "" || tag == null)
+            get
             {
-                return "";
+                if (versionArr.Length == 4)
+                    return versionArr[0];
+                else return 0;
             }
-            return tag;
+        }
+
+        public int Minor
+        {
+            get
+            {
+                if (versionArr.Length == 4)
+                    return versionArr[1];
+                else if (versionArr.Length == 3)
+                    return versionArr[0];
+                else return 0;
+            }
+        }
+
+        public int Revision
+        {
+            get
+            {
+                if (versionArr.Length == 4)
+                    return versionArr[2];
+                else if (versionArr.Length == 3)
+                    return versionArr[1];
+                else if (versionArr.Length == 2)
+                    return versionArr[0];
+                else return 0;
+            }
+        }
+
+        public int Build
+        {
+            get
+            {
+                if (versionArr.Length == 4)
+                    return versionArr[3];
+                else if (versionArr.Length == 3)
+                    return versionArr[2];
+                else if (versionArr.Length == 2)
+                    return versionArr[1];
+                else return 0;
+            }
+        }
+
+        public string Tag
+        {
+            get
+            {
+                if (tag == null || tag == "") return "";
+                return tag;
+            }
         }
 
         public override string ToString()
         {
-            string x = "";
             if (tag == null || tag == "")
             {
-                if (major <= -1)
-                {
-                    if (minor <= -1)
-                    {
-                        x = $"{build}.{revision}";
-                    }
-                    else
-                    {
-                        x = $"{minor}.{build}.{revision}";
-                    }
-                }
-                else
-                {
-                    if (minor <= -1)
-                    {
-                        var b = major;
-                        major = -1;
-                        minor = b;
-                        x = $"{minor}.{build}.{revision}";
-                    }
-                    else
-                    {
-                        x = $"{major}.{minor}.{build}.{revision}";
-                    }
-                }
+                //Don't use tag.
+                if (versionArr.Length == 4)
+                    return $"{Major}.{Minor}.{Revision}.{Build}";
+                else if (versionArr.Length == 3)
+                    return $"{Minor}.{Revision}.{Build}";
+                else if (versionArr.Length == 2)
+                    return $"{Revision}.{Build}";
+                else return "";
             }
             else
             {
-                if (major <= -1)
-                {
-                    if (minor <= -1)
-                    {
-                        x = $"{build}.{revision}-{tag}";
-                    }
-                    else
-                    {
-                        x = $"{minor}.{build}.{revision}-{tag}";
-                    }
-                }
-                else
-                {
-                    if (minor <= -1)
-                    {
-                        var b = major;
-                        major = -1;
-                        minor = b;
-                        x = $"{minor}.{build}.{revision}-{tag}";
-                    }
-                    else
-                    {
-                        x = $"{major}.{minor}.{build}.{revision}-{tag}";
-                    }
-                }
+                //Use tag.
+                if (versionArr.Length == 4)
+                    return $"{Major}.{Minor}.{Revision}.{Build}-{Tag}";
+                else if (versionArr.Length == 3)
+                    return $"{Minor}.{Revision}.{Build}-{Tag}";
+                else if (versionArr.Length == 2)
+                    return $"{Revision}.{Build}-{Tag}";
+                else return "";
             }
-            return x;
         }
 
-        public static CommandVersion Parse(string version)
+        public static CommandVersion Parse(string data)
         {
-            CommandVersion cv = null;
-            var a = $@"{version}";
-            string[] dat = null;
-            if (a.Contains("-"))
+            if (data.Contains("-"))
             {
-                dat = a.Split('-');
-                var dx = dat[0].Split('.');
+                var dat = data.Split('-');
                 var tag = dat[1];
-                if (dx.Length == 4)
-                {
-                    cv.major = int.Parse(dx[0]);
-                    cv.minor = int.Parse(dx[1]);
-                    cv.build = int.Parse(dx[2]);
-                    cv.revision = int.Parse(dx[3]);
-                }
-                else if (dx.Length == 3)
-                {
-                    cv.major = -1;
-                    cv.minor = int.Parse(dx[0]);
-                    cv.build = int.Parse(dx[1]);
-                    cv.revision = int.Parse(dx[2]);
-                }
-                else if (dx.Length == 2)
-                {
-                    cv.major = -1;
-                    cv.minor = -1;
-                    cv.build = int.Parse(dx[0]);
-                    cv.revision = int.Parse(dx[1]);
-                }
-                else return null;
-                cv.tag = tag;
+                string x = dat[0];
+                var spl = x.Split('.');
+                if (spl.Length == 4)
+                    return new CommandVersion(int.Parse(spl[0]), int.Parse(spl[1]), int.Parse(spl[2]), int.Parse(spl[3]), tag);
+                else if (spl.Length == 3)
+                    return new CommandVersion(int.Parse(spl[0]), int.Parse(spl[1]), int.Parse(spl[2]), tag);
+                else if (spl.Length == 2)
+                    return new CommandVersion(int.Parse(spl[0]), int.Parse(spl[1]), tag);
+                else return new CommandVersion(0,0,0,0);
             }
             else
             {
-                var dx = dat = a.Split('.');
-                if (dx.Length == 4)
-                {
-                    cv.major = int.Parse(dx[0]);
-                    cv.minor = int.Parse(dx[1]);
-                    cv.build = int.Parse(dx[2]);
-                    cv.revision = int.Parse(dx[3]);
-                }
-                else if (dx.Length == 3)
-                {
-                    cv.major = -1;
-                    cv.minor = int.Parse(dx[0]);
-                    cv.build = int.Parse(dx[1]);
-                    cv.revision = int.Parse(dx[2]);
-                }
-                else if (dx.Length == 2)
-                {
-                    cv.major = -1;
-                    cv.minor = -1;
-                    cv.build = int.Parse(dx[0]);
-                    cv.revision = int.Parse(dx[1]);
-                }
-                else return null;
+                var spl = data.Split('.');
+                if (spl.Length == 4)
+                    return new CommandVersion(int.Parse(spl[0]), int.Parse(spl[1]), int.Parse(spl[2]), int.Parse(spl[3]));
+                else if (spl.Length == 3)
+                    return new CommandVersion(int.Parse(spl[0]), int.Parse(spl[1]), int.Parse(spl[2]));
+                else if (spl.Length == 2)
+                    return new CommandVersion(int.Parse(spl[0]), int.Parse(spl[1]));
+                else return new CommandVersion(0, 0, 0, 0);
             }
-            return cv;
         }
     }
 }

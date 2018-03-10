@@ -25,11 +25,41 @@ namespace WMCommandFramework
             set { debugMode = value; }
         }
 
+        private static bool allowInvokerVersion = false;
+        /// <summary>
+        /// Allows or denys the use of --version for CommandFramework, but does not block the access for commands.
+        /// </summary>
+        public static bool AllowFrameworkVersion
+        {
+            get { return allowInvokerVersion; }
+            set { allowInvokerVersion = value; }
+        }
+
         private static bool allowExit = false;
         public static bool AllowExit
         {
             get { return allowExit; }
             set { allowExit = value; }
+        }
+
+        private static string unknownCommandErrorMessage = "";
+        /// <summary>
+        /// This message is displayed anytime the CommandInvoker tries invoking an unknown command.
+        /// </summary>
+        public static string UnknownCommandMessage
+        {
+            get => unknownCommandErrorMessage;
+            set => unknownCommandErrorMessage = value;
+        }
+
+        private static string unknownErrorErrorMessage = "";
+        /// <summary>
+        /// This message is displayed anytime an unknown error was thrown.
+        /// </summary>
+        public static string UnknownErrorErrorMessage
+        {
+            get => unknownErrorErrorMessage;
+            set => unknownErrorErrorMessage = value;
         }
     }
     public class CommandProcessor
@@ -62,10 +92,20 @@ namespace WMCommandFramework
             }
             catch (Exception ex)
             {
-                if (CommandUtils.DebugMode == true)
-                    Console.WriteLine($"An unknown error has occurred! Please restart your computer! Error: {ex.ToString()}");
+                if ((CommandUtils.UnknownErrorErrorMessage == "" || CommandUtils.UnknownErrorErrorMessage == null))
+                {
+                    if (CommandUtils.DebugMode == true)
+                        Console.WriteLine($"An unknown error has occurred! Error: {ex.ToString()}");
+                    else
+                        Console.WriteLine("An unknown error has occurred!");
+                }
                 else
-                    Console.WriteLine("An unknown error has occurred! Please restart your computer!");
+                {
+                    if (CommandUtils.DebugMode == true)
+                        Console.WriteLine($"{CommandUtils.UnknownErrorErrorMessage} {ex.ToString()}");
+                    else
+                        Console.WriteLine($"{CommandUtils.UnknownErrorErrorMessage}");
+                }
             }
         }
     }

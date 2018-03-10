@@ -7,6 +7,26 @@
     <StartupObject />
     <RootNamespace>WMCommandFramework</RootNamespace>
     <AssemblyName>WMCommandFramework</AssemblyName>
+    <Version>0.1.5</Version>
+    <Authors>WinMister332</Authors>
+    <Company>Vanros Corperation</Company>
+    <PackageId>CommandFramework</PackageId>
+    <Product>CommandFramework</Product>
+    <Description>A simple command processing framework built in C#</Description>
+    <Copyright>Copyright © 2017-2018 Vanros Corperation</Copyright>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/WinMister332/CommandFramework</PackageProjectUrl>
+    <PackageIconUrl />
+    <RepositoryUrl>https://github.com/WinMister332/CommandFramework</RepositoryUrl>
+    <PackageTags>C#, COSMOS, .NET Standard, Command Processing, Console Applications</PackageTags>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <RepositoryType>C#</RepositoryType>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LoggerSharp" Version="1.0.2" />
+  </ItemGroup>
 
 </Project>

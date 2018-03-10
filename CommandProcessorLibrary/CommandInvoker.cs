@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using WMCommandFramework.Exceptions;
 using System.Text;
+using WMCommandFramework.Commands;
+using System.Text.RegularExpressions;
 
 namespace WMCommandFramework
 {
@@ -12,9 +15,9 @@ namespace WMCommandFramework
         public CommandInvoker()
         {
             //TODO: Register Internal Commands.
-            //AddCommand(new Help());
-            //AddCommand(new Clear());
-            //AddCommand(new Echo());
+            AddCommand(new HelpCommand());
+            AddCommand(new ClearCommand());
+            AddCommand(new EchoCommand());
         }
 
         /// <summary>
@@ -114,47 +117,88 @@ namespace WMCommandFramework
         public void InvokeCommand(string input)
         {
             var x = input.Split(' ');
-            var name = x[0];
-            CommandArgs args = null;
-            if (x.Length > name.Length) args = new CommandArgs();
-            else args = new CommandArgs(new CommandArgs(x).Skip(name));
-            var cmd = GetCommand(name);
-            if (cmd == null)
-            {
-                //Not a command.
-                Console.WriteLine($"\"{name.ToLower()}\", is not a valid command.");
-            }
-            else
-            {
-                if (!(args.isEmpty() && args.GetArgAtPosition(0) == "--version"))
+            var value = x[0];
+            CommandArgs args = Util.ParseArguments(value, x);
+            var cmd = GetCommand(value);
+                if (value == "--version")
                 {
-                    Console.WriteLine($@"{cmd.CommandName()}\nCurrent Version: {cmd.CommandVersion().ToString()}\n");
+                    if (CommandUtils.DebugMode)
+                        Console.WriteLine("--version was found at the begining of the input string.");
+                    if (CommandUtils.AllowFrameworkVersion)
+                    {
+                        if (CommandUtils.DebugMode)
+                            Console.WriteLine("Set CommandArgs to empty.");
+                        Console.WriteLine($"-=-=-=-=-=-=-=-=-=-=-=-=-\n" +
+                        $"CommandFramework:\n" +
+                        $"   Version:{new CommandFrameworkVersion().GetVersion().ToString()}\n" +
+                        $"   GitHub Repo: https://github.com/WinMister332/CommandFramework" +
+                        $"\n   License: M.I.T.\n" +
+                        $"-=-=-=-=-=-=-=-=-=-=-=-=-");
+                    }
+                    return;
                 }
                 else
                 {
-                    try
+                    if (cmd == null)
                     {
-                        //Invoke Command.
-                        cmd.OnCommandInvoked(this, args);
+                        if (CommandUtils.UnknownCommandMessage == null || CommandUtils.UnknownCommandMessage == "")
+                            Console.WriteLine($"\"{value}\", is not a valid internal or external command.");
+                        else
+                            Console.WriteLine(CommandUtils.UnknownCommandMessage);
                         return;
                     }
-                    catch (SyntaxException sex)
+                    else
                     {
-                        //Unknown Error Print Syntax.
-                        Console.WriteLine($"Syntax Error:\n<>: Required, []: Optional.\nUsage: {cmd.CommandSynt().ToLower()}");
-                    }
-                    catch (Exception ex)
-                    {
-                        if (WMCommandFramework.CommandUtils.DebugMode)
+                        if ((args.IsEmpty() != true) && (args.GetArgAtPosition(0) == "--version"))
                         {
-                            var data = $"[CommandInvoker]: An unknown error occurred! -> {ex.ToString()}";
-                            Console.WriteLine(data);
-                            System.Diagnostics.Debug.WriteLine(data);
+                            if (CommandUtils.DebugMode)
+                                Console.WriteLine("The --version argument was found for the command.");
+                            if ((cmd.CommandVersion() != null) && (cmd.Copyright() != null))
+                            {
+                                Console.WriteLine($"-=-=-=-=-=-=-=-=-=-=-\n" +
+                                    $"{cmd.CommandName()}:\n" +
+                                    $"  {cmd.Copyright().ToString()}\n" +
+                                    $"  Version: {cmd.CommandVersion().ToString()}\n" +
+                                    $"-=-=-=-=-=-=-=-=-=-=-");
+
+                                return;
+                            }
+                            else if ((cmd.CommandVersion() != null) && (cmd.Copyright() == null))
+                            {
+                                Console.WriteLine($"-=-=-=-=-=-=-=-=-=-=-\n" +
+                                    $"{cmd.CommandName()}:\n" +
+                                    $"  Version: {cmd.CommandVersion().ToString()}\n" +
+                                    $"-=-=-=-=-=-=-=-=-=-=-");
+
+                                return;
+                            }
+                            else
+                            {
+                                //When TerminalInvoker is setup inject the command to be run.
+
+                                return;
+                            }
                         }
-                        return;
+                        else
+                        {
+                            try
+                            {
+                                if (CommandUtils.DebugMode)
+                                    Console.WriteLine("Executing command!");
+                                cmd.OnCommandInvoked(this, args);
+                                return;
+                            }
+                            catch (Exceptions.SyntaxException sex)
+                            {
+                                if (CommandUtils.DebugMode)
+                                    Console.WriteLine($"Syntax Error:\n<> Required, [] Optional, | || OR\nUsage: {value} {cmd.CommandSynt()}\n\n[ERROR: {sex.ToString()}]");
+                                else
+                                    Console.WriteLine($"Incorrect Syntax:\n<> Required, [] Optional, | || OR\nUsage: {value} {cmd.CommandSynt()}");
+                                return;
+                            }
+                        }
                     }
                 }
-            }
         }
     }
 }
