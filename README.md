@@ -33,58 +33,53 @@ public Kernel : Sys.Kernel
 }
 ```
 Once the CommandProcessor was implemented into the COSMOS Kernel you need to create the command.
-Create a new class and implement the Command interface to the class.
+Create a new class that implements the abstract Command class.
 ```CSharp
 using System;
-using System.Text;
 using System.Collections.Generic;
+using System.Text;
 
-public class ExampleCommand : Command
+namespace Project.Commands
 {
-  public string CommandName()
-  {
-    return "example"; //The primary name of the command.
-  }
-  public string CommandDesc()
-  {
-    return "Displays and example prompt based on the arguments.";
-  }
-  public string CommandSynt()
-  {
-    return "[args]";
-  }
-  public string[] CommandAliases()
-  {
-    return new String[] {"exmple", "ex"};
-  }
-  public void OnCommandInvoked(CommandInvoker invoker, CommandArgs args)
-  {
-    //When the command is processed this method is invoked.
-    if (args.isEmpty())
+    public class ExampleCommand : Command
     {
-      new Exception("The command must have arguments.");
+        public override string[] CommandAliases()
+        {
+            return new string[] { "print", "return" };
+        }
+
+        public override string CommandDesc()
+        {
+            return "Prints the specified information to the console.";
+        }
+
+        public override string CommandName()
+        {
+            return "example";
+        }
+
+        public override string CommandSynt()
+        {
+            return "<message>";
+        }
+
+        public override CommandVersion CommandVersion()
+        {
+            return new WMCommandFramework.CommandVersion(1,0,1,"b");
+        }
+
+        public override void OnCommandInvoked(CommandInvoker invoker, CommandArgs args)
+        {
+            if (args.IsEmpty()) throw new Exceptions.SyntaxException("The \"message\" argument cannot be null or empty.");
+            else
+            {
+                Console.WriteLine($"{args.GetArgAtPosition(0)}");
+            }
+        }
     }
-    else if (args.ContainsSwitch("a"))
-    {
-      Console.WriteLine("The argument -a was found.");
-    }
-    else if (args.ContainsSwitch("b"))
-    {
-      Console.WriteLine("The argument -b was found.");
-    }
-    else if (arg.ContainsSwitch("a") && arg.Contains("b"))
-    {
-      Console.WriteLine("The arguments -a and -b was found!");
-    }
-    else if (arg.ContainsSegmentedSwitch("c"))
-    {
-      var segmentedArgValue = arg.GetSegmentedSwitchValue("c");
-      Console.WriteLine($"A segmented switch was found in the string array. It's value is: {segmentedArgValue}!");
-    }
-  }
 }
 ```
-After the class containing the command was created and was implemented into the CommandInvoker class it should work in your OS.
+After the class containing the command was created and was implemented into the CommandInvoker class it should work in your OS. Just be sure to register your command with the command invoker if you haven't done so already, but if you followed this README then the command would have been registered before the command was created.
 
 ### Use with non-COSMOS applications
 
@@ -133,82 +128,88 @@ partial class Program
 Once the CommandProcessor was implemented into your MAIN Program class and registered in CommandProcessor you can create the command.}
 ```CSharp
 using System;
-using System.Text;
 using System.Collections.Generic;
+using System.Text;
 
-public class ExampleCommand : Command
+namespace Project.Commands
 {
-  public string CommandName()
-  {
-    return "example"; //The primary name of the command.
-  }
-  public string CommandDesc()
-  {
-    return "Displays and example prompt based on the arguments.";
-  }
-  public string CommandSynt()
-  {
-    return "[args]";
-  }
-  public string[] CommandAliases()
-  {
-    return new String[] {"exmple", "ex"};
-  }
-  public void OnCommandInvoked(CommandInvoker invoker, CommandArgs args)
-  {
-    //When the command is processed this method is invoked.
-    if (args.isEmpty())
+    public class ExampleCommand : Command
     {
-      new Exception("The command must have arguments.");
+        public override string[] CommandAliases()
+        {
+            return new string[] { "print", "return" };
+        }
+
+        public override string CommandDesc()
+        {
+            return "Prints the specified information to the console.";
+        }
+
+        public override string CommandName()
+        {
+            return "example";
+        }
+
+        public override string CommandSynt()
+        {
+            return "<message>";
+        }
+
+        public override CommandVersion CommandVersion()
+        {
+            return new WMCommandFramework.CommandVersion(1,0,1,"b");
+        }
+
+        public override void OnCommandInvoked(CommandInvoker invoker, CommandArgs args)
+        {
+            if (args.IsEmpty()) throw new Exceptions.SyntaxException("The \"message\" argument cannot be null or empty.");
+            else
+            {
+                Console.WriteLine($"{args.GetArgAtPosition(0)}");
+            }
+        }
     }
-    else if (args.ContainsSwitch("a"))
-    {
-      Console.WriteLine("The argument -a was found.");
-    }
-    else if (args.ContainsSwitch("b"))
-    {
-      Console.WriteLine("The argument -b was found.");
-    }
-    else if (arg.ContainsSwitch("a") && arg.Contains("b"))
-    {
-      Console.WriteLine("The arguments -a and -b was found!");
-    }
-    else if (arg.ContainsSegmentedSwitch("c"))
-    {
-      var segmentedArgValue = arg.GetSegmentedSwitchValue("c");
-      Console.WriteLine($"A segmented switch was found in the string array. It's value is: {segmentedArgValue}!");
-    }
-  }
 }
 ```
 When implementing the CommandProcessor into your own application it's recommended you add a close command so you can freely close the application.
 ```CSharp
 using System;
-using System.Text;
 using System.Collections.Generic;
+using System.Text;
 
-public class ExitCommand : Command
+namespace Project.Commands
 {
-  public string CommandName()
-  {
-    return "exit";
-  }
-  public string CommandDesc()
-  {
-    return "Closes the application.";
-  }
-  public string CommandSynt()
-  {
-    return "";
-  }
-  public string[] CommandAliases()
-  {
-    return new String[] {"close", "terminate", "quit", "stop", "end"};
-  }
-  public void OnCommandInvoked(CommandInvoker invoker, CommandArgs args)
-  {
-    Program.canExit = true;
-    return;
-  }
+    public class ExitCommand : Command
+    {
+        public override string[] CommandAliases()
+        {
+            return new string[] { "close", "stop", "terminate", "quit", "escape", "end" };
+        }
+
+        public override string CommandDesc()
+        {
+            return "Closes the application.";
+        }
+
+        public override string CommandName()
+        {
+            return "exit";
+        }
+
+        public override string CommandSynt()
+        {
+            return "";
+        }
+
+        public override CommandVersion CommandVersion()
+        {
+            return new WMCommandFramework.CommandVersion(1,0,1,"b");
+        }
+
+        public override void OnCommandInvoked(CommandInvoker invoker, CommandArgs args)
+        {
+            CommandUtils.AllowExit = true;
+        }
+    }
 }
 ```
