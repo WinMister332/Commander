@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WMCommandFramework
+namespace WMCommandFramework.COSMOS
 {
     public class CommandArgs
     {
@@ -10,7 +10,7 @@ namespace WMCommandFramework
 
         public CommandArgs()
         {
-            new List<string>(0);
+            args = new List<string>(0);
             if (CommandUtils.DebugMode)
                 Console.WriteLine("Set CommandArgs array length to 0.");
         }
@@ -503,7 +503,7 @@ namespace WMCommandFramework
 
         //public static IEnumerable<string> Skip(int count)
         //{
-            
+
         //}
 
         #endregion
