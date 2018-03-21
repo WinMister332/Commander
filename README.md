@@ -1,6 +1,5 @@
-# CommandFramework
-CommandFramework is a simple command parser/invoker built in C# for the COSMOS operating system library.
-The library was built to work with COSMOS/.NET Core, however, you can use this library in any application even console applications.
+# WMCommandFramework
+The WMCommandFramework is a simple command framework built in C# for COSMOS and .NETStandard applications.
 
 ### Use with COSMOS
 In the COSMOS kernel class implement the CommandProcessor class.
@@ -8,26 +7,32 @@ In the COSMOS kernel class implement the CommandProcessor class.
 using System;
 using Sys = Cosmos.System;
 //Import the CommandFramework.
-using WMCommandFramework;
+using CMD = WMCommandFramework.COSMOS;
 
 public Kernel : Sys.Kernel
 {
   //Add the command processor class.
-  private static ComamndProcessor processor;
+  private static CMD.ComamndProcessor processor;
   
   protected override void BeforeRun()
   {
-    if (processor == null) processor = new CommandProcessor();
-    CommandUtils.CurrentToken = "CommandFramework"; //Adds the "CommandFramework" string in front of the command input.
-    CommandUtils.DebugMode = true; //Shows any errors that was produced by the *CommandFramework* if any.
-    
-    //Register Commands Below.
-    processor.GetInvoker().AddCommand(new ExampleCommand()); //Registers the command created below.
+    if (processor == null) processor = new CMD.CommandProcessor();
+    //Used for displaying version information when a lone --version is used.
+    processor.Version = new CMD.ApplicationVersion("WMCommandFramework Example OS", new CMD.CommandCopyright("Vanros Corperation"), new CMD.CommandVersion(1, 1, 0, "STABLE"));
+    //Replaces `CommandUtil.CurrentToken`.
+    processor.Message = new CMD.InputMessage[] { new CMD.InputMessage(ConsoleColor.Cyan, "$administrator"), new CMD.InputMessage(ConsoleColor.Green, "@WMCommandFrameworkOS"), CMD.InputMessage.NewLine };
+    //Register Commands:
+    processor.GetInvoker().AddCommand(new ExampleCommand());
+    //Loop login prompt until the user logs in.
+    while (true)
+    {
+      var access = processor.LoginPrompt("administrator", "password");
+      if (access) break;
+    }
   }
   
   protected override void Run()
   {
-    //Don't need to add a while loop with COSMOS as the Run method loops.
     processor.Process();
   }
 }
@@ -45,7 +50,7 @@ namespace Project.Commands
     {
         public override string[] CommandAliases()
         {
-            return new string[] { "print", "return" };
+            return new string[0]; //Means there's no aliases.
         }
 
         public override string CommandDesc()
@@ -90,6 +95,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CMD = WMCommandFramework.NETStandard;
 
 partial class Program
 {
@@ -99,29 +105,29 @@ partial class Program
   }
   
   //Add the CommandProcessor class.
-  private CommandProcessor processor;
-  //Add the Boolean that tells the Program to exit.
-  internal static bool canExit = false;
+  private CMD.CommandProcessor processor;
   
   public Program()
   {
-    if (processor == null) processor = new CommandProcessor();
-    CommandUtils.CurrentToken = "CommandFramework"; //Adds the "CommandFramework" string in front of the command input.
-    CommandUtils.DebugMode = true; //Shows any errors that was produced by the *CommandFramework* if any.
-    
-    //Register Commands Below.
-    processor.GetInvoker().AddCommand(new ExampleCommand()); //Registers the command created below.
-    processor.GetInvoker().AddCommand(new ExitCommand()); //Registers the ExitCommand.
+    if (processor == null) processor = new CMD.CommandProcessor();
+    //Used for displaying version information when a lone --version is used.
+    processor.Version = new CMD.ApplicationVersion("WMCommandFramework Example OS", new CMD.CommandCopyright("Vanros Corperation"), new CMD.CommandVersion(1, 1, 0, "STABLE"));
+    //Replaces `CommandUtil.CurrentToken`.
+    processor.Message = new CMD.InputMessage[] { new CMD.InputMessage(ConsoleColor.Cyan, "$administrator"), new CMD.InputMessage(ConsoleColor.Green, "@WMCommandFrameworkOS"), CMD.InputMessage.NewLine };
+    //Register Commands:
+    processor.GetInvoker().AddCommand(new ExampleCommand());
+    //The exit command is now included.
   }
   
   public void Start()
   {
-    //In non-COSMOS applications that doesn't loop you need to add a while loop.
-    while (true)
-    {
-      if (canExit) break;
-      processor.Process();
-    }
+    //The WHILE/Close loop is now included in the CommandProcessor class.
+    processor.Process();
+  }
+  
+  public CMD.CommandProcessor GetProcessor()
+  {
+    return processor;
   }
 }
 ```
@@ -137,7 +143,7 @@ namespace Project.Commands
     {
         public override string[] CommandAliases()
         {
-            return new string[] { "print", "return" };
+            return new string[0]; //Means there's no aliases.
         }
 
         public override string CommandDesc()
@@ -167,48 +173,6 @@ namespace Project.Commands
             {
                 Console.WriteLine($"{args.GetArgAtPosition(0)}");
             }
-        }
-    }
-}
-```
-When implementing the CommandProcessor into your own application it's recommended you add a close command so you can freely close the application.
-```CSharp
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Project.Commands
-{
-    public class ExitCommand : Command
-    {
-        public override string[] CommandAliases()
-        {
-            return new string[] { "close", "stop", "terminate", "quit", "escape", "end" };
-        }
-
-        public override string CommandDesc()
-        {
-            return "Closes the application.";
-        }
-
-        public override string CommandName()
-        {
-            return "exit";
-        }
-
-        public override string CommandSynt()
-        {
-            return "";
-        }
-
-        public override CommandVersion CommandVersion()
-        {
-            return new WMCommandFramework.CommandVersion(1,0,1,"b");
-        }
-
-        public override void OnCommandInvoked(CommandInvoker invoker, CommandArgs args)
-        {
-            CommandUtils.AllowExit = true;
         }
     }
 }
