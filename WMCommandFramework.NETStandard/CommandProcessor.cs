@@ -11,7 +11,7 @@ namespace WMCommandFramework.NETStandard
         /// <summary>
         /// Sets whether the CommandProcessor can close.
         /// </summary>
-        public static bool Close
+        internal static bool Close
         {
             get => AllowClose;
             set => AllowClose = value;
@@ -20,7 +20,7 @@ namespace WMCommandFramework.NETStandard
         /// <summary>
         /// Whether debug information should be printed to the current terminal.
         /// </summary>
-        public static bool Debug
+        public bool Debug
         {
             get => CommandUtils.DebugMode;
             set => CommandUtils.DebugMode = value;
@@ -29,7 +29,7 @@ namespace WMCommandFramework.NETStandard
         /// <summary>
         /// The message to display in every command input prompt.
         /// </summary>
-        public static InputMessage[] Message
+        public InputMessage[] Message
         {
             get => CommandUtils.InputMessage;
             set => CommandUtils.InputMessage = value;
@@ -38,7 +38,7 @@ namespace WMCommandFramework.NETStandard
         /// <summary>
         /// The version of the current application.
         /// </summary>
-        public static ApplicationVersion Version
+        public ApplicationVersion Version
         {
             get => CommandUtils.Version;
             set => CommandUtils.Version = value;

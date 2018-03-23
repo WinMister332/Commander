@@ -34,12 +34,15 @@ namespace WMCommandFramework.COSMOS
         }
 
         private CommandInvoker invoker = null;
+        internal static CommandProcessor INSTANCE = null;
+
 
         /// <summary>
         /// Creates a new instance of the command processor class to allow terminal input.
         /// </summary>
         public CommandProcessor()
         {
+            INSTANCE = this;
             invoker = new CommandInvoker();
         }
 
@@ -103,6 +106,7 @@ namespace WMCommandFramework.COSMOS
             return false;
         }
 
+        [Obsolete()]
         /// <summary>
         /// Promps for a username and password then compares it with the values specified in the constructor.
         /// </summary>
