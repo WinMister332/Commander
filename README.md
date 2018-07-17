@@ -6,7 +6,7 @@ The WMCommandFramework is a simple command framework built in C# for COSMOS and 
 [![NuGet](https://img.shields.io/nuget/v/WMCommandFramework.COSMOS.svg?style=for-the-badge)](https://www.nuget.org/packages/WMCommandFramework.COSMOS/)
 
 ## Nuget - WMCommandFramework.NETStandard
-[![NuGet](https://img.shields.io/nuget/dt/WMCommandFramework.NETStandard/svg?style=for-the-badge)](https://www.nuget.org/packages/WMCommandFramework.NETStandard/)
+[![NuGet](https://img.shields.io/nuget/dt/WMCommandFramework.NETStandard.svg?style=for-the-badge)](https://www.nuget.org/packages/WMCommandFramework.NETStandard/)
 [![NuGet](https://img.shields.io/nuget/v/WMCommandFramework.NETStandard.svg?style=for-the-badge)](https://www.nuget.org/packages/WMCommandFramework.NETStandard/)
 
 ## GitHub - WMCommandFramework
