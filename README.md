@@ -8,7 +8,7 @@ Be sure your class is the equivalent to that of the class below.
 ```CSharp
 using System;
 using System.Text;
-using System.Linq
+using System.Linq;
 using System.Collections.Generic;
 using Sys = Cosmos.System;
 using CMD = WMCommandFramework.COSMOS;
