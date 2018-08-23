@@ -20,6 +20,7 @@ namespace WMCommandFramework.NETStandard.Commands
         {
             if (args.IsEmpty())
             {
+                //Execute Normally.
                 foreach (Command c in invoker.GetCommands())
                 {
                     Console.WriteLine($"{c.Name()}: {c.Description()}");
@@ -29,7 +30,7 @@ namespace WMCommandFramework.NETStandard.Commands
             {
                 if (args.StartsWithSwitch("l"))
                 {
-                    //Format
+                    //Show without descriptions.
                     int cnt = 0;
                     string x = "";
                     string output = "";
@@ -57,22 +58,62 @@ namespace WMCommandFramework.NETStandard.Commands
                 else
                 {
                     var cmd = invoker.GetCommand(args.GetArgAtPosition(0));
-                    if (cmd == null)
+                    if (!(cmd == null))
                     {
-                        foreach (Command c in invoker.GetCommands())
+                        //Execute CMD-Specific help.
+                        if (cmd.Copyright() == null && cmd.Version() != null)
                         {
-                            Console.WriteLine($"{c.Name()}: {c.Description()}");
+                            //Copyright is null, Version is not.
+                            Console.WriteLine(
+                                $"[+]==========|HELP|==========[+]\n" +
+                                $"Name: {cmd.Name()}\n" +
+                                $"Description: {cmd.Description()}\n" +
+                                $"Syntax: {cmd.Syntax()}\n" +
+                                $"Aliases: {ToString(cmd.Aliases())}\n" +
+                                $"Version: {cmd.Version().ToString()}\n" +
+                                $"[+]==========|HELP|==========[+]");
+                        }
+                        else if (cmd.Copyright() != null && cmd.Version() == null)
+                        {
+                            //Version is null, Copyright is not.
+                            Console.WriteLine(
+                                $"[+]==========|HELP|==========[+]\n" +
+                                $"Name: {cmd.Name()}\n" +
+                                $"Description: {cmd.Description()}\n" +
+                                $"Syntax: {cmd.Syntax()}\n" +
+                                $"Aliases: {ToString(cmd.Aliases())}\n" +
+                                $"Copyright: {cmd.Copyright()}\n" +
+                                $"[+]==========|HELP|==========[+]");
+                        }
+                        else if (cmd.Copyright() != null && cmd.Version() != null)
+                        {
+                            //Neither Copyright or Version is null.
+                            Console.WriteLine(
+                                $"[+]==========|HELP|==========[+]\n" +
+                                $"Name: {cmd.Name()}\n" +
+                                $"Description: {cmd.Description()}\n" +
+                                $"Syntax: {cmd.Syntax()}\n" +
+                                $"Aliases: {ToString(cmd.Aliases())}\n" +
+                                $"Version: {cmd.Version()}" +
+                                $"Copyright: {cmd.Copyright()}\n" +
+                                $"[+]==========|HELP|==========[+]");
+                        }
+                        else
+                        {
+                            //Both are null.
+                            Console.WriteLine(
+                                $"[+]==========|HELP|==========[+]\n" +
+                                $"Name: {cmd.Name()}\n" +
+                                $"Description: {cmd.Description()}\n" +
+                                $"Syntax: {cmd.Syntax()}\n" +
+                                $"Aliases: {ToString(cmd.Aliases())}\n"+
+                                $"[+]==========|HELP|==========[+]");
                         }
                     }
                     else
                     {
-                        string x = $"[]==========|COMMAND HELP|==========[]\n" +
-                            $"Name: {cmd.Name()}\n" +
-                            $"Description: {cmd.Description()}\n" +
-                            $"Syntax: {cmd.Syntax()}\n" +
-                            $"Aliases: {ToString(cmd.Aliases())}\n" +
-                            $"Version: {cmd.Version()}" +
-                            $"[]==========|COMMAND HELP|==========[]";
+                        //Execute Normally.
+
                     }
                 }
             }
@@ -85,7 +126,7 @@ namespace WMCommandFramework.NETStandard.Commands
 
         public override string Syntax()
         {
-            return "[-l | command] (-l: Lists all comamnds without their descriptions.)";
+            return "[-l | command] (-l: Lists all commands without their descriptions.)";
         }
 
         public override CommandVersion Version()
@@ -102,7 +143,7 @@ namespace WMCommandFramework.NETStandard.Commands
                 if (x == "" || x == null)
                     x = $"{value[index]}";
                 else
-                    x += $" {value[index]}";
+                    x += $", {value[index]}";
             }
             return x;
         }

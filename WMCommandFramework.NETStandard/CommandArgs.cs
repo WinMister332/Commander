@@ -518,7 +518,7 @@ namespace WMCommandFramework.NETStandard
         {
             if (IsEmpty()) return false;
             var x = args.ToArray();
-            if (x[0] == value) return true;
+            if (x[0] == value || x[0].Contains(value)) return true;
             return false;
         }
 
@@ -531,7 +531,7 @@ namespace WMCommandFramework.NETStandard
         {
             if (IsEmpty()) return false;
             var x = args.ToArray();
-            if (x[0] == value || x[0].Contains(value)) return true;
+            if ((x[0] == "/" + value || x[0].Contains("/" + value)) || (x[0] == "-" +  value || x[0].Contains("-" + value))) return true;
             return false;
         }
 

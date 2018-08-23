@@ -1,0 +1,10 @@
+WMCOMMANDFRAMEWORK.COSMOS:
+[ ] Fix 'InputMessage'.
+[X] Fix 'Copyright'.
+[ ] Fix 'Help' Command-Specific arguments.
+
+WMCOMMANDFRAMEWORK.NETSTANDARD:
+[ ] Fix 'InputMessage'.
+[X] Fix 'Copyright'.
+[ ] Fix 'Help' Command-Specific arguments.
+

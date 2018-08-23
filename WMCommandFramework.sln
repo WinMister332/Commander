@@ -3,9 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WMCommandFramework.COSMOS", "WMCommandFramework.COSMOS\WMCommandFramework.COSMOS.csproj", "{E0DD7D6A-61C9-4AA9-9FF6-043C9247A42F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WMCommandFramework.COSMOS", "WMCommandFramework.COSMOS\WMCommandFramework.COSMOS.csproj", "{E0DD7D6A-61C9-4AA9-9FF6-043C9247A42F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WMCommandFramework.NETStandard", "WMCommandFramework.NETStandard\WMCommandFramework.NETStandard.csproj", "{3D221241-3A8D-4CF9-A7AE-7E4A465B3DB0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApplication", "TestApplication\TestApplication.csproj", "{96D11ECB-70F4-46BB-9398-A97CD091C25B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{579906A5-BD25-4CD1-9ECC-9E79D6273C8F}"
+	ProjectSection(SolutionItems) = preProject
+		Stuff to Fix.txt = Stuff to Fix.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +28,10 @@ Global
 		{3D221241-3A8D-4CF9-A7AE-7E4A465B3DB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D221241-3A8D-4CF9-A7AE-7E4A465B3DB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D221241-3A8D-4CF9-A7AE-7E4A465B3DB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96D11ECB-70F4-46BB-9398-A97CD091C25B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96D11ECB-70F4-46BB-9398-A97CD091C25B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96D11ECB-70F4-46BB-9398-A97CD091C25B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96D11ECB-70F4-46BB-9398-A97CD091C25B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

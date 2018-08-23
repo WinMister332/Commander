@@ -14,11 +14,11 @@ namespace WMCommandFramework.COSMOS
             get => CommandUtils.DebugMode;
             set => CommandUtils.DebugMode = value;
         }
-        
+
         /// <summary>
         /// The message to display in every command input prompt.
         /// </summary>
-        public InputMessage[] Message
+        public InputMessage Message
         {
             get => CommandUtils.InputMessage;
             set => CommandUtils.InputMessage = value;
@@ -33,13 +33,41 @@ namespace WMCommandFramework.COSMOS
             set => CommandUtils.Version = value;
         }
 
+        /// <summary>
+        /// The name of the current operating system.
+        /// </summary>
+        public string OSName
+        {
+            get => CommandUtils.OSName;
+            set => CommandUtils.OSName = value;
+        }
+
+        /// <summary>
+        /// The user that's currently logged in and accepting commands.
+        /// </summary>
+        public TerminalUser CurrentUser
+        {
+            get => CommandUtils.CurrentUser;
+            set => CommandUtils.CurrentUser = value;
+        }
+
+        private ConsoleColor defaultColor = ConsoleColor.White;
+        public ConsoleColor DefaultColor
+        {
+            get => defaultColor;
+            set => defaultColor = value;
+        }
+
         private CommandInvoker invoker = null;
+        internal static CommandProcessor INSTANCE = null;
+
 
         /// <summary>
         /// Creates a new instance of the command processor class to allow terminal input.
         /// </summary>
         public CommandProcessor()
         {
+            INSTANCE = this;
             invoker = new CommandInvoker();
         }
 
@@ -57,17 +85,23 @@ namespace WMCommandFramework.COSMOS
         /// </summary>
         public void Process()
         {
-            for (int i = 0; i == Message.Length; i++)
-            {
-                int index = i--;
-                var dat = Message[index];
-                Console.ForegroundColor = dat.GetColor();
-                Console.Write($"{dat.GetMessage()} ");
-            }
-            Console.Write(">");
+            PrintMessage();
             var input = Console.ReadLine();
             if (input != null && input != "")
                 invoker.InvokeCommand(input);
+        }
+
+        private void PrintMessage()
+        {
+            var a = Message;
+            var b = a.GetMessage();
+            foreach (MessageText mt in b)
+            {
+                Console.ForegroundColor = mt.GetColor();
+                Console.Write(mt.GetText());
+                Console.ForegroundColor = DefaultColor;
+            }
+            Console.Write("> ");
         }
 
         /// <summary>
@@ -103,6 +137,7 @@ namespace WMCommandFramework.COSMOS
             return false;
         }
 
+        [Obsolete()]
         /// <summary>
         /// Promps for a username and password then compares it with the values specified in the constructor.
         /// </summary>
