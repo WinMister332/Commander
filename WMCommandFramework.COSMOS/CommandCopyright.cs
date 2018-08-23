@@ -7,110 +7,76 @@ namespace WMCommandFramework.COSMOS
 {
     public class CommandCopyright
     {
-        private string _developer = "";
-        private int _baseYear = 2018;
+        private string dev = "";
+        private int year = -1;
+        private bool used = false;
 
-        internal CommandCopyright()
+        public CommandCopyright()
         {
-            _baseYear = CurrentYear;
-            _developer = "*";
+            dev = "";
+            year = -1;
+            used = false;
         }
 
-        /// <summary>
-        /// Creates a new Copyright class that holds all needed copyright information for the class.
-        /// </summary>
-        /// <param name="developer">The developer of the command or application.</param>
         public CommandCopyright(string developer)
         {
-            _baseYear = CurrentYear;
-            if (developer == null || developer == "" || developer == "*")
-                _developer = "Vanros Corperation";
-            else
-                _developer = developer;
+            dev = developer;
+            year = Year;
+            used = true;
         }
 
-        /// <summary>
-        /// Creates a new Copyright class that holds all needed copyright information for the class.
-        /// </summary>
-        /// <param name="developer">The developer of the command or application.</param>
-        /// <param name="baseYear">The inital year the command or application was first developed.</param>
         public CommandCopyright(string developer, int baseYear)
         {
-            if (baseYear < 1990 && !(baseYear > 1990 || baseYear == 1990))
-                baseYear = 1990;
-            else if (baseYear > CurrentYear)
-                baseYear = CurrentYear;
-            else
-                _baseYear = baseYear;
-            if (developer == null || developer == "" || developer == "*")
-                _developer = "Vanros Corperation";
-            else
-                _developer = developer;
+            if ((baseYear <= 1975)) baseYear = 1975;
+            dev = developer;
+            year = baseYear;
+            used = true;
         }
 
-        /// <summary>
-        /// The developer of the command or application.
-        /// </summary>
-        private string Developer
+        public int BaseYear
+        {
+            get => year;
+            set => year = value;
+        }
+
+        public int Year
         {
             get
             {
-                if (_developer == "" || _developer == null)
-                    return "Vanros Corperation";
-                else if (_developer == "*")
-                    return "";
-                else
-                    return _developer;
+                var yearx = int.Parse($"{Hal.RTC.Century-1}{Hal.RTC.Year}");
+                return yearx;
             }
         }
 
-        /// <summary>
-        /// The initial year the command or application was first developed.
-        /// </summary>
-        private int CreationYear
-        {
-            get => _baseYear;
-        }
-
-        /// <summary>
-        /// Converts all provided copyright information into a simple string.
-        /// </summary>
-        /// <returns>A simple copyright string. I.E. Copyright (c) 2018 Vanros Corperation, All Rights Reserved!</returns>
         public override string ToString()
         {
-            if (CreationYear == CurrentYear)
-                return GetCopyrightString(Developer, CreationYear.ToString());
-            else if (CreationYear < CurrentYear)
-                return GetCopyrightString(Developer, $"{CreationYear}-{CurrentYear}");
-            else if (CreationYear > CurrentYear)
-                return GetCopyrightString(Developer, $"{CurrentYear}");
+            if (!(used) || year == -1 && (dev == "" || dev == null))
+                return "";
             else
-                return GetCopyrightString(Developer, CurrentYear.ToString());
-        }
-
-        private static string GetCopyrightString(string developer, string yearStamp)
-        {
-            return $"Copyright (c) {yearStamp} {developer}, All Rights Reserved!";
-        }
-
-        internal static CommandCopyright VanrosCopyright()
-        {
-            return new CommandCopyright("", 2017);
-        }
-
-        internal static CommandCopyright VanrosCopyright(int year)
-        {
-            if (year < 2015)
-                year = 2015;
-            return new CommandCopyright("", year);
-        }
-
-        private static int CurrentYear
-        {
-            get
             {
-                return Hal.RTC.Year;
+                return $"Copyright (c) {YearStamp()} {dev}, All Rights Reserved!";
             }
+        }
+
+        private string YearStamp()
+        {
+            string stamp = "";
+            if ((!(BaseYear < 1975 || Year < 1975) && (BaseYear > 0 && BaseYear >= 1975)))
+                stamp = $"{BaseYear}-{Year}";
+            else if ((BaseYear == Year))
+                stamp = Year.ToString();
+            else if ((BaseYear >= Year))
+            {
+                year = Year;
+                stamp = year.ToString();
+            }
+            return stamp;
+        }
+
+        public static CommandCopyright VanrosCopyright()
+        {
+            var copyright = new CommandCopyright("Vanros Corperation", 2017);
+            return copyright;
         }
     }
 }

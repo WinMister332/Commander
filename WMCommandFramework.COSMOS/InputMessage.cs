@@ -3,89 +3,152 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace WMCommandFramework.COSMOS
-{
+{ 
     public class InputMessage
     {
-        private ConsoleColor _color = Console.ForegroundColor;
-        private string _message = "";
+        private List<MessageText> text;
 
-        /// <summary>
-        /// Creates a standerd InputMessage string.
-        /// </summary>
         public InputMessage()
         {
-            _message = "CommandFramework";
+            text = new List<MessageText>(0);
         }
 
         /// <summary>
-        /// Creates an InputMessage with the specified message.
+        /// The message to append to 'InputMessage'.
         /// </summary>
-        /// <param name="message">Text to display.</param>
-        public InputMessage(string message)
+        /// <param name="text"></param>
+        public InputMessage(params MessageText[] text)
         {
-            _message = message;
+            this.text = new List<MessageText>(text.Length);
+            foreach (MessageText mt in text)
+            {
+                this.text.Add(mt);
+            }
         }
 
         /// <summary>
-        /// Creates an InputMessage with the specified message.
+        /// Get the entire message.
         /// </summary>
-        /// <param name="color">The color the message will display in.</param>
-        /// <param name="message">The message to display.</param>
-        public InputMessage(ConsoleColor color, string message)
+        /// <returns>The entire 'InputMessage'.</returns>
+        public MessageText[] GetMessage()
         {
-            _message = message;
-            _color = color;
+            return text.ToArray();
         }
 
         /// <summary>
-        /// Gets the currently active color.
+        /// Gets a specific portion of the 'InputMessage' based off the index of the array it was applied to.
         /// </summary>
-        /// <returns>The color this message uses.</returns>
+        /// <param name="index">The index of the message in the array.</param>
+        /// <returns>Return the message based on the array.</returns>
+        public MessageText GetMessageText(int index)
+        {
+            var x = GetMessage();
+            return x[index];
+        }
+
+        /// <summary>
+        /// Gets the index of a specific message from the 'InputMessage' array.
+        /// </summary>
+        /// <param name="messageText">The message in the array.</param>
+        /// <returns>The index of the message in the parent array.</returns>
+        public int GetIndex(MessageText messageText)
+        {
+            return text.IndexOf(messageText);
+        }
+
+        public void AppendMessage(MessageText text)
+        {
+            var a = this.text;
+            a.Add(text);
+        }
+
+        public static InputMessage AppendMessage(InputMessage input, MessageText text)
+        {
+            input.AppendMessage(text);
+            return input;
+        }
+
+        public static InputMessage Empty()
+        {
+            return new InputMessage();
+        }
+
+        public static InputMessage SimpleHelp()
+        {
+            return new InputMessage(new MessageText("[Type \"help\" for help.]"), MessageText.WhiteSpace());
+        }
+    }
+    
+    public class MessageText
+    {
+        private bool colorSet = false;
+        private ConsoleColor textColor = ConsoleColor.White;
+        private string text = "";
+
+        /// <summary>
+        /// Creates a new instance of the 'MessageText' class, while setting the values for the 'MessageText' specified.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        public MessageText(string text)
+        {
+            this.text = text;
+            colorSet = false;
+            textColor = Console.ForegroundColor;
+        }
+
+        /// <summary>
+        /// Creates a new instance of the 'MessageText' class, while setting the values for the 'MessageText' specified.
+        /// </summary>
+        /// <param name="color">The color of this specific portion of the text in the overall message.</param>
+        /// <param name="text">The text.</param>
+        public MessageText(ConsoleColor color, string text)
+        {
+            this.text = text;
+            textColor = color;
+            colorSet = true;
+        }
+
+        /// <summary>
+        /// The color of the text set in the constructor.
+        /// </summary>
+        /// <returns>The consolecolor of the text by the constructor.</returns>
         public ConsoleColor GetColor()
         {
-            return _color;
+            if (colorSet)
+                return textColor;
+            else
+                return Console.ForegroundColor;
         }
 
         /// <summary>
-        /// Gets the current message.
+        /// The text.
         /// </summary>
-        /// <returns>The text this message uses.</returns>
-        public string GetMessage()
+        /// <returns>The text.</returns>
+        public string GetText()
         {
-            return _message;
+            if (!(text == "" || text == null))
+                return text;
+            else return "";
         }
 
-        /// <summary>
-        /// Creates a new line.
-        /// </summary>
-        public static InputMessage NewLine
+        public static MessageText CurrentColor()
         {
-            get => new InputMessage("\n");
+            return new MessageText(Console.ForegroundColor, "");
         }
 
-        /// <summary>
-        /// Resets any color after the point where this class is used to whatever the console is currently using.
-        /// </summary>
-        public static InputMessage ResetColor
+        public static MessageText NewLine()
         {
-            get => new InputMessage("");
+            return new MessageText("\n");
         }
 
-        /// <summary>
-        /// Appends an InputMessage to the current InputMessage array.
-        /// </summary>
-        /// <param name="array">The array to append to.</param>
-        /// <param name="value">The value to append.</param>
-        /// <returns>The new InputMessage array with the appended value.</returns>
-        public static InputMessage[] AppendMessage(InputMessage[] array, InputMessage value)
+        public static MessageText Empty()
         {
-            List<InputMessage> input = new List<InputMessage>(array.Length + 1);
-            foreach (InputMessage message in array)
-            {
-                input.Add(message);
-            }
-            input.Add(value);
-            return input.ToArray();
+            return new MessageText("");
+        }
+
+        public static MessageText WhiteSpace()
+        {
+            return new MessageText(" ");
         }
     }
 }

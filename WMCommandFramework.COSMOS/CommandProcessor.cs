@@ -14,11 +14,11 @@ namespace WMCommandFramework.COSMOS
             get => CommandUtils.DebugMode;
             set => CommandUtils.DebugMode = value;
         }
-        
+
         /// <summary>
         /// The message to display in every command input prompt.
         /// </summary>
-        public InputMessage[] Message
+        public InputMessage Message
         {
             get => CommandUtils.InputMessage;
             set => CommandUtils.InputMessage = value;
@@ -31,6 +31,31 @@ namespace WMCommandFramework.COSMOS
         {
             get => CommandUtils.Version;
             set => CommandUtils.Version = value;
+        }
+
+        /// <summary>
+        /// The name of the current operating system.
+        /// </summary>
+        public string OSName
+        {
+            get => CommandUtils.OSName;
+            set => CommandUtils.OSName = value;
+        }
+
+        /// <summary>
+        /// The user that's currently logged in and accepting commands.
+        /// </summary>
+        public TerminalUser CurrentUser
+        {
+            get => CommandUtils.CurrentUser;
+            set => CommandUtils.CurrentUser = value;
+        }
+
+        private ConsoleColor defaultColor = ConsoleColor.White;
+        public ConsoleColor DefaultColor
+        {
+            get => defaultColor;
+            set => defaultColor = value;
         }
 
         private CommandInvoker invoker = null;
@@ -60,17 +85,23 @@ namespace WMCommandFramework.COSMOS
         /// </summary>
         public void Process()
         {
-            for (int i = 0; i == Message.Length; i++)
-            {
-                int index = i--;
-                var dat = Message[index];
-                Console.ForegroundColor = dat.GetColor();
-                Console.Write($"{dat.GetMessage()} ");
-            }
-            Console.Write(">");
+            PrintMessage();
             var input = Console.ReadLine();
             if (input != null && input != "")
                 invoker.InvokeCommand(input);
+        }
+
+        private void PrintMessage()
+        {
+            var a = Message;
+            var b = a.GetMessage();
+            foreach (MessageText mt in b)
+            {
+                Console.ForegroundColor = mt.GetColor();
+                Console.Write(mt.GetText());
+                Console.ForegroundColor = DefaultColor;
+            }
+            Console.Write("> ");
         }
 
         /// <summary>

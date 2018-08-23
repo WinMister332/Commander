@@ -29,7 +29,7 @@ namespace WMCommandFramework.NETStandard
         /// <summary>
         /// The message to display in every command input prompt.
         /// </summary>
-        public InputMessage[] Message
+        public InputMessage Message
         {
             get => CommandUtils.InputMessage;
             set => CommandUtils.InputMessage = value;
@@ -42,6 +42,13 @@ namespace WMCommandFramework.NETStandard
         {
             get => CommandUtils.Version;
             set => CommandUtils.Version = value;
+        }
+
+        private ConsoleColor defaultColor = ConsoleColor.White;
+        public ConsoleColor DefaultColor
+        {
+            get => defaultColor;
+            set => defaultColor = value;
         }
 
         private CommandInvoker invoker = null;
@@ -72,18 +79,24 @@ namespace WMCommandFramework.NETStandard
             while (true)
             {
                 if (Close) break;
-                for (int i = 0; i == Message.Length; i++)
-                {
-                    int index = i--;
-                    var dat = Message[index];
-                    Console.ForegroundColor = dat.GetColor();
-                    Console.Write($"{dat.GetMessage()} ");
-                }
-                Console.Write(">");
+                PrintMessage();
                 var input = Console.ReadLine();
                 if (input != null && input != "")
                     invoker.InvokeCommand(input);
             }
+        }
+
+        private void PrintMessage()
+        {
+            var a = Message;
+            var b = a.GetMessage();
+            foreach (MessageText mt in b)
+            {
+                Console.ForegroundColor = mt.GetColor();
+                Console.Write(mt.GetText());
+                Console.ForegroundColor = DefaultColor;
+            }
+            Console.Write("> ");
         }
 
         /// <summary>

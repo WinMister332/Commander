@@ -7,7 +7,7 @@ namespace WMCommandFramework.NETStandard
     public class CommandUtils
     {
         private static bool _debug = false;
-        private static InputMessage[] _message = new InputMessage[] { new InputMessage() };
+        private static InputMessage inputMessage = null;
         private static ApplicationVersion _applicationVersion = ApplicationVersion.CommandFrameworkVersion;
 
         /// <summary>
@@ -22,10 +22,13 @@ namespace WMCommandFramework.NETStandard
         /// <summary>
         /// The message to display in every command input prompt.
         /// </summary>
-        public static InputMessage[] InputMessage
+        public static InputMessage InputMessage
         {
-            get => _message;
-            set => _message = value;
+            get => inputMessage;
+            set
+            {
+                if (value != null) inputMessage = value;
+            }
         }
 
         /// <summary>

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using WMCommandFramework.COSMOS.Commands;
 
 namespace WMCommandFramework.COSMOS
@@ -175,8 +177,7 @@ namespace WMCommandFramework.COSMOS
                     }
                     else
                     {
-                        if (cmd.Copyright() != new CommandCopyright())
-                            Console.WriteLine(cmd.Copyright());
+                        PrintCopyright(cmd);
                         cmd.Invoke(this, args);
                         if (cmd.ThrowSyntax == true)
                         {
@@ -186,6 +187,14 @@ namespace WMCommandFramework.COSMOS
                         }
                     }
                 }
+            }
+        }
+
+        public void PrintCopyright(Command command)
+        {
+            if ((!(command.Copyright() == null)) && (!(command.Copyright().ToString() == "" || command.Copyright().ToString() == null)))
+            {
+                Console.WriteLine(command.Copyright().ToString());
             }
         }
     }
@@ -204,6 +213,20 @@ namespace WMCommandFramework.COSMOS
             var index = x.IndexOf(value);
             x.RemoveAt(index);
             return new CommandArgs(x.ToArray());
+        }
+
+        public static string ArrayToString<T>(T[] array)
+        {
+            string s = "";
+            foreach (T sx in array)
+            {
+                var x = sx.ToString();
+                if (s == null || s == "")
+                    s = x;
+                else
+                    s += $", {x}";
+            }
+            return s;
         }
     }
 }
