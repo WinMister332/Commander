@@ -1,143 +1,193 @@
-# CommandFramework
-CommandFramework is a simple command parser/invoker built in C# for the COSMOS operating system library.
-The library was built to work with COSMOS/.NET Core, however, you can use this library in any application even console applications.
+# WMCommandFramework
+The WMCommandFramework is a simple command framework built in C# for COSMOS and .NETStandard applications.
+
+## Nuget - WMCommandFramework.COSMOS
+[![NuGet](https://img.shields.io/nuget/dt/WMCommandFramework.COSMOS.svg?style=for-the-badge)](https://www.nuget.org/packages/WMCommandFramework.COSMOS/#)
+[![NuGet](https://img.shields.io/nuget/v/WMCommandFramework.COSMOS.svg?style=for-the-badge)](https://www.nuget.org/packages/WMCommandFramework.COSMOS/)
+
+## Nuget - WMCommandFramework.NETStandard
+[![NuGet](https://img.shields.io/nuget/dt/WMCommandFramework.NETStandard.svg?style=for-the-badge)](https://www.nuget.org/packages/WMCommandFramework.NETStandard/)
+[![NuGet](https://img.shields.io/nuget/v/WMCommandFramework.NETStandard.svg?style=for-the-badge)](https://www.nuget.org/packages/WMCommandFramework.NETStandard/)
+
+## GitHub - WMCommandFramework
+[![GitHub issues](https://img.shields.io/github/issues/winmister332/wmcommandframework.svg?style=for-the-badge)](https://github.com/WinMister332/WMCommandFramework/issues)
+[![GitHub forks](https://img.shields.io/github/forks/winmister332/wmcommandframework.svg?style=for-the-badge&label=Fork)](https://github.com/WinMister332/WMCommandFramework/network/members)
+[![GitHub top language](https://img.shields.io/github/languages/top/winmister332/wmcommandframework.svg?style=for-the-badge)](https://github.com/WinMister332/WMCommandFramework/search?l=c%23)
+[![license](https://img.shields.io/github/license/winmister332/wmcommandframework.svg?style=for-the-badge)](https://github.com/WinMister332/WMCommandFramework/blob/master/LICENSE)
 
 ### Use with COSMOS
-Once this library is referenced in the project, you must initialize it.
-Be sure your class is the equivalent to that of the class below.
+In the COSMOS kernel class implement the CommandProcessor class.
 ```CSharp
 using System;
-using System.Text;
-using System.Linq;
-using System.Collections.Generic;
 using Sys = Cosmos.System;
+//Import the CommandFramework.
 using CMD = WMCommandFramework.COSMOS;
 
-public class Kernel : Sys.Kernel
+public Kernel : Sys.Kernel
 {
-    //The command processor.
-    private static CMD.CommandProcessor processor;
-
-    protected override void BeforeRun()
+  //Add the command processor class.
+  private static CMD.ComamndProcessor processor;
+  
+  protected override void BeforeRun()
+  {
+    if (processor == null) processor = new CMD.CommandProcessor();
+    //Used for displaying version information when a lone --version is used.
+    processor.Version = new CMD.ApplicationVersion("WMCommandFramework Example OS", new CMD.CommandCopyright("Vanros Corperation"), new CMD.CommandVersion(1, 1, 0, "STABLE"));
+    //Replaces `CommandUtil.CurrentToken`.
+    processor.Message = new CMD.InputMessage[] { new CMD.InputMessage(ConsoleColor.Cyan, "$administrator"), new CMD.InputMessage(ConsoleColor.Green, "@WMCommandFrameworkOS"), CMD.InputMessage.NewLine };
+    //Register Commands:
+    processor.GetInvoker().AddCommand(new ExampleCommand());
+    //Loop login prompt until the user logs in.
+    while (true)
     {
-        //Initializes the CommandProcessor.
-        processor = new CMD.CommandProcessor();
-        processor.Message = new CMOS.InputMessage(
-                new CMOS.MessageText(ConsoleColor.Cyan, "$Administrator"),
-                new CMOS.MessageText(ConsoleColor.Blue, "@DuskOS"),
-                CMOS.MessageText.WhiteSpace(),
-                new CMOS.MessageText(ConsoleColor.Green, System.IO.Directory.GetCurrentDirectory())
-        );
-        
-        //Enable debug output from the command processor.
-        processor.Debug = true;
-        //The version of the current application.
-        processor.Version = new CMD.ApplicationVersion("DuskOS", new CMD.CommandCopyright("WinMister332"), new CMD.CommandVersion(1,0,0,0, "BETA"));
+      var access = processor.LoginPrompt("administrator", "password");
+      if (access) break;
     }
-    
-    protected override void Run()
-    {
-        //Process command input.
-        processor.Process();
-    }
-    
-    public CMD.CommandProcessor GetProcessor()
-    {
-        return processor;
-    }
+  }
+  
+  protected override void Run()
+  {
+    processor.Process();
+  }
 }
 ```
-Once the command processor is initialized we need to register new commands or even override internal or existing commands.
-Create a new class for your command. We'll create a simple 'Echo' command.
-Be sure the command implements the 'Command' class.
+Once the CommandProcessor was implemented into the COSMOS Kernel you need to create the command.
+Create a new class that implements the abstract Command class.
 ```CSharp
-public class EchoCommand : CMD.Command
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Project.Commands
 {
-    public override string[] Aliases()
+    public class ExampleCommand : Command
     {
-        throw new NotImplementedException();
-    }
-
-    public override string Description()
-    {
-         throw new NotImplementedException();
-    }
-
-    public override void Invoke(CMD.CommandInvoker invoker, CMD.CommandArgs args)
-    {
-        throw new NotImplementedException();
-    }
-
-    public override string Name()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override string Syntax()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override CMD.CommandVersion Version()
-    {
-        throw new NotImplementedException();
-    }
-)
-```
-When the 'Command' class is implemented it will throw all the values which could be a problem when the command processor calls the various functions.
-Replace the default code in the functions with the code required for your command.
-```CSharp
-    public override string[] Aliases()
-    {
-        return new string[] { "print" };
-    }
-
-    public override string Description()
-    {
-         return "Prints a message to the terminal.";
-    }
-
-    //Runs when the command is processed then invoked.
-    public override void Invoke(CMD.CommandInvoker invoker, CMD.CommandArgs args)
-    {
-        if (!(arg.IsEmpty()))
+        public override string[] CommandAliases()
         {
-            var message = args.GetArgAtPosition(0);
-            Console.WriteLine(message);
-            return; //Optional return - Safety to return to the previous function.
+            return new string[0]; //Means there's no aliases.
+        }
+
+        public override string CommandDesc()
+        {
+            return "Prints the specified information to the console.";
+        }
+
+        public override string CommandName()
+        {
+            return "example";
+        }
+
+        public override string CommandSynt()
+        {
+            return "<message>";
+        }
+
+        public override CommandVersion CommandVersion()
+        {
+            return new WMCommandFramework.CommandVersion(1,0,1,"b");
+        }
+
+        public override void OnCommandInvoked(CommandInvoker invoker, CommandArgs args)
+        {
+            if (args.IsEmpty()) throw new Exceptions.SyntaxException("The \"message\" argument cannot be null or empty.");
+            else
+            {
+                Console.WriteLine($"{args.GetArgAtPosition(0)}");
+            }
         }
     }
-
-    public override string Name()
-    {
-        return "echo";
-    }
-
-    public override string Syntax()
-    {
-        return "<message>";
-    }
-
-    public override CMD.CommandVersion Version()
-    {
-        return new CMD.CommandVersion(1,0,0,0, "BETA");
-    }
+}
 ```
-Since we have an 'Echo' command built-in to the command processor we need to override the internal command. At this current point in time, there's no function or method to easially do such a thing, so we have to manually override the internal command with our custom one.
-As of currently the only way to do this is by getting the primary class of the internal command, to do this you need to do so VIA the 'processor' class.
+After the class containing the command was created and was implemented into the CommandInvoker class it should work in your OS. Just be sure to register your command with the command invoker if you haven't done so already, but if you followed this README then the command would have been registered before the command was created.
+
+### Use with non-COSMOS applications
+
+Implememnt the CommandProcessor into your MAIN Program class.
 ```CSharp
-protected override void BeforeRun()
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using CMD = WMCommandFramework.NETStandard;
+
+partial class Program
 {
-    var invoker = processor.GetInvoker(); //This is required to register or unregister commands. But, it'll also help us remove a command by-name.
-    var xcmd = invoker.GetCommandByName(); //If you don't know the exact name of a command and only know an alias you can use 'GetCommandByAlias()' if you don't know whether the command is the name or alias you can use 'GetCommand()'.
-    //Check that the command is NOT null.
-    if (xcmd != null)
+  static void Main(string[] args)
+  {
+    new Program().Start();
+  }
+  
+  //Add the CommandProcessor class.
+  private CMD.CommandProcessor processor;
+  
+  public Program()
+  {
+    if (processor == null) processor = new CMD.CommandProcessor();
+    //Used for displaying version information when a lone --version is used.
+    processor.Version = new CMD.ApplicationVersion("WMCommandFramework Example OS", new CMD.CommandCopyright("Vanros Corperation"), new CMD.CommandVersion(1, 1, 0, "STABLE"));
+    //Replaces `CommandUtil.CurrentToken`.
+    processor.Message = new CMD.InputMessage[] { new CMD.InputMessage(ConsoleColor.Cyan, "$administrator"), new CMD.InputMessage(ConsoleColor.Green, "@WMCommandFrameworkOS"), CMD.InputMessage.NewLine };
+    //Register Commands:
+    processor.GetInvoker().AddCommand(new ExampleCommand());
+    //The exit command is now included.
+  }
+  
+  public void Start()
+  {
+    //The WHILE/Close loop is now included in the CommandProcessor class.
+    processor.Process();
+  }
+  
+  public CMD.CommandProcessor GetProcessor()
+  {
+    return processor;
+  }
+}
+```
+Once the CommandProcessor was implemented into your MAIN Program class and registered in CommandProcessor you can create the command.}
+```CSharp
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Project.Commands
+{
+    public class ExampleCommand : Command
     {
-        //Remove the internal 'echo' command.
-        invoker.RemoveCommand(xcmd);
+        public override string[] CommandAliases()
+        {
+            return new string[0]; //Means there's no aliases.
+        }
+
+        public override string CommandDesc()
+        {
+            return "Prints the specified information to the console.";
+        }
+
+        public override string CommandName()
+        {
+            return "example";
+        }
+
+        public override string CommandSynt()
+        {
+            return "<message>";
+        }
+
+        public override CommandVersion CommandVersion()
+        {
+            return new WMCommandFramework.CommandVersion(1,0,1,"b");
+        }
+
+        public override void OnCommandInvoked(CommandInvoker invoker, CommandArgs args)
+        {
+            if (args.IsEmpty()) throw new Exceptions.SyntaxException("The \"message\" argument cannot be null or empty.");
+            else
+            {
+                Console.WriteLine($"{args.GetArgAtPosition(0)}");
+            }
+        }
     }
 }
 ```
-The above will remove the internal echo command allowing us to add our new one.
-To add a command add the following code to your Kernel 'BeforeRun()' function.
-`invoker.AddCommand(new Echo()); //This'll add our new command to the invoker.`
