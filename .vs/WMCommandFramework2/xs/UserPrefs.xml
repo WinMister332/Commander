@@ -1,0 +1,24 @@
+﻿<Properties StartupConfiguration="{50C22156-B965-4188-AAEB-DD36AC1F24A2}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="WMCommandFramework2/InputMessage.cs">
+    <Files>
+      <File FileName="WMCommandFramework2/.#CommandAttributes.cs" Line="461" Column="23" />
+      <File FileName="WMCommandFramework2/CommandCopyright.cs" Line="32" Column="15" />
+      <File FileName="WMCommandFramework2/CommandCopyright.cs" Line="10" Column="10" />
+      <File FileName="WMCommandFramework2/CommandVersion.cs" Line="184" Column="74" />
+      <File FileName="WMCommandFramework2/Class1.cs" Line="100" Column="14" />
+      <File FileName="WMCommandFramework2/Returnable.cs" Line="6" Column="2" />
+      <File FileName="WMCommandFramework2/Commands/.#Help.cs" Line="20" Column="6" />
+      <File FileName="WMCommandFramework2/Commands/Help.cs" Line="42" Column="17" />
+      <File FileName="WMCommandFramework2/Commands/Version.cs" Line="46" Column="10" />
+      <File FileName="WMCommandFramework2/Program.cs" Line="7" Column="2" />
+      <File FileName="WMCommandFramework2/InputMessage.cs" Line="60" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.WMCommandFramework2 PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

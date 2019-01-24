@@ -1,0 +1,9 @@
+/Users/elisabethcallahanmitsch/Projects/WMCommandFramework2/WMCommandFramework2/obj/Debug/netstandard2.0/WMCommandFramework2.csprojAssemblyReference.cache
+/Users/elisabethcallahanmitsch/Projects/WMCommandFramework2/WMCommandFramework2/obj/Debug/netstandard2.0/WMCommandFramework2.csproj.CoreCompileInputs.cache
+/Users/elisabethcallahanmitsch/Projects/WMCommandFramework2/WMCommandFramework2/obj/Debug/netstandard2.0/WMCommandFramework2.AssemblyInfoInputs.cache
+/Users/elisabethcallahanmitsch/Projects/WMCommandFramework2/WMCommandFramework2/obj/Debug/netstandard2.0/WMCommandFramework2.AssemblyInfo.cs
+/Users/elisabethcallahanmitsch/Projects/WMCommandFramework2/WMCommandFramework2/bin/Debug/netstandard2.0/WMCommandFramework2.deps.json
+/Users/elisabethcallahanmitsch/Projects/WMCommandFramework2/WMCommandFramework2/bin/Debug/netstandard2.0/WMCommandFramework2.dll
+/Users/elisabethcallahanmitsch/Projects/WMCommandFramework2/WMCommandFramework2/bin/Debug/netstandard2.0/WMCommandFramework2.pdb
+/Users/elisabethcallahanmitsch/Projects/WMCommandFramework2/WMCommandFramework2/obj/Debug/netstandard2.0/WMCommandFramework2.dll
+/Users/elisabethcallahanmitsch/Projects/WMCommandFramework2/WMCommandFramework2/obj/Debug/netstandard2.0/WMCommandFramework2.pdb
