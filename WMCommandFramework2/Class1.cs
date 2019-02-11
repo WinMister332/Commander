@@ -3,9 +3,10 @@ using System.IO;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
-using WMCommandFramework2.Utilities;
+using WMCommandFramework.Commands;
+using WMCommandFramework.Utilities;
 
-namespace WMCommandFramework2
+namespace WMCommandFramework
 {
     public static class CommandUtilities
     {
@@ -81,6 +82,13 @@ namespace WMCommandFramework2
             set => closeProcessor = value;
         }
 
+        private bool displayEcho = true;
+        public bool DisplayEcho
+        {
+            get => displayEcho;
+            set => displayEcho = value;
+        }
+
         private void PrintMessage()
         {
             var a = Message;
@@ -101,12 +109,13 @@ namespace WMCommandFramework2
                 //Loop.
                 while (true)
                 {
-                    //Closes the processor loop of told to.
+                    //Closes the processor loop if told to.
                     if (closeProcessor) break;
                     //Do data.
 
                     //Write message text to console.
-                    PrintMessage();
+                    if (DisplayEcho)
+                        PrintMessage();
 
                     //Reads the data written into the console.
                     var input = Console.ReadLine();
@@ -121,7 +130,8 @@ namespace WMCommandFramework2
                 //Do data.
 
                 //Write message text to console.
-                PrintMessage();
+                if (DisplayEcho)
+                   PrintMessage();
 
                 //Reads the data written into the console.
                 var input = Console.ReadLine();
@@ -141,14 +151,26 @@ namespace WMCommandFramework2
         {
             commands = new List<Command>();
             //Register Default Commands.
-
+            Register(new Command[]
+            {
+                new Help(),
+                new Clear(),
+                new Echo(),
+                new Exit()
+            });
         }
 
         public CommandInvoker(int capacity)
         {
             commands = new List<Command>(capacity);
             //Register Default Commands.
-
+            Register(new Command[]
+            {
+                new Help(),
+                new Clear(),
+                new Echo(),
+                new Exit()
+            });
         }
 
         public CommandProcessor GetProcessor() => commandProcessor;
@@ -297,65 +319,71 @@ namespace WMCommandFramework2
 
         public void Invoke(string input)
         {
-            //Parses the input and invokes the command provided if one is found.
-            //Split the string into segments.
-            var s1 = input.Split(' ');
-            //Get the command name or alias from 's1'.
-            var sname = s1[0]; //The first value in the array is the command, the remaining is arguments.
-            //Skip the name, then convert it back to a plain string.
-            var s2 = s1.Skip(1).ToList().ToString();
-            var args = new CommandArguments(ParseArguments(s2, true));
-            var cmd = GetCommand(sname);
-            //Check for command.
+            //Split all data in the string by space.
+            var x = input.Split(' ');
+            //Get the name of the command that was passed.
+            var name = x[0];
+            //Convert all data in 'x' back to string..
+            var xarg = x.Skip(1).ToString(); //Converts back to the original string excluding the name.
+            //check if the xarg variable is null, if so, do nothing with it.
+            CommandArguments args = null;
+            if (xarg == null || xarg == "")
+                args = new CommandArguments(new string[0]);
+            else
+                args = new CommandArguments(ParseArguments(xarg));
+            //Finally, get command with the name provided.
+            var cmd = GetCommand(name);
+            //Check if the command is valid, if not return a not found error.
             if (cmd == null)
             {
-                //No Such Command
-                Console.WriteLine($"\"{sname}\", is not a valid internal or external command.");
+                Console.WriteLine($"\"{name}\", is not a valid internal or external command!");
+            }
+            else if (name == "--version" || name == "-ver")
+            {
+                if (CommandUtilities.ApplicationName.GetCopyright() == CommandCopyright.VANROS ||
+                    CommandUtilities.ApplicationName.GetCopyright() == CommandCopyright.EMPTY)
+                    Console.WriteLine(
+                        $"~~~~~~~~~| VERSION |~~~~~~~~~\n" +
+                        $"{AppName.WMCommandFramework.GetCopyright()}\n" +
+                        $"{AppName.WMCommandFramework.GetName()} Version: {AppName.WMCommandFramework.GetVersion()}\n" +
+                        $"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+                        );
+                else
+                    Console.WriteLine(
+                        $"~~~~~~~~~| VERSION |~~~~~~~~~\n" +
+                        $"{CommandUtilities.ApplicationName.GetCopyright()}\n" +
+                        $"{CommandUtilities.ApplicationName.GetName()} Version: {CommandUtilities.ApplicationName.GetVersion()}\n" +
+                        $"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+                        );
             }
             else
-            { 
-                //The command exists.
-                //Next, once the command is found check for arguments.
-                if (!(args.IsEmpty()))
+            {
+                //Do Stuff.
+                //First, check command version, then execute command.
+                if (args.Count == 0)
                 {
-                    //There are commands in the command argument array, get the first argument.
-                    var a1 = args.GetCommandAtPosition(0);
-                    //Check if argument is equal to one required, otherwise, do nothing.
-                    if (a1.Equals("--version", StringComparison.CurrentCultureIgnoreCase) ||
-                        a1.Equals("-version", StringComparison.CurrentCultureIgnoreCase) ||
-                        a1.Equals("-v", StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        //Display Version Info.
-                        //Check if there's a copyright in the command that's not the default value.
-                        if (!(cmd.Copyright().Equals(CommandCopyright.EMPTY) && cmd.Copyright().Equals(null)))
-                        {
-                            //Display version info with copyright.
-                            Console.WriteLine(
-                            $"~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
-                            $"{cmd.Copyright()}\n" +
-                            $"{cmd.Name()} Version: {cmd.Version()}\n" +
-                            $"Description: {cmd.Description()}" +
-                            $"~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-                        }
-                        else 
-                        {
-                            //Display version info without copyright.
-                            Console.WriteLine(
-                            $"~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
-                            $"{cmd.Name()} Version: {cmd.Version()}\n" +
-                            $"Description: {cmd.Description()}" +
-                            $"~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-                        }
-                    }
-                    else
-                    {
-                        cmd.OnInvoke(this, args);
-                    }
+                    if (cmd.Copyright() != CommandCopyright.EMPTY)
+                        Console.WriteLine($"{cmd.Copyright()}");
+                    cmd.OnInvoke(this, args);
                 }
                 else
                 {
-                    //Even if there isn't arguments, invoke the command anyway.
-                    cmd.OnInvoke(this, args);
+                    if (args.GetCommandAtPosition(0) == $"--version" || args.GetCommandAtPosition(0) == $"-ver")
+                    {
+                        if (cmd.Copyright() != null && cmd.Copyright() != CommandCopyright.EMPTY)
+                        {
+                            Console.WriteLine($"~~~~~~~~~~~~~~~~~~~~\n" +
+                                $"{cmd.Copyright()}\n" +
+                                $"{cmd.Name()} Version: {cmd.Version().ToString()}\n" +
+                                $"~~~~~~~~~~~~~~~~~~~~");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"~~~~~~~~~~~~~~~~~~~~\n" +
+                                $"{cmd.Name()} Version: {cmd.Version().ToString()}\n" +
+                                $"~~~~~~~~~~~~~~~~~~~~");
+                        }
+                    }
                 }
             }
         }
@@ -454,15 +482,13 @@ namespace WMCommandFramework2
         public abstract string Name();
         public abstract string Description();
         public abstract string[] Aliases();
-        //TODO: Change Later with 'VERSION' class.
-        public abstract string Version();
-        //TODO: Change Later with 'COPYRIGHT' class;
-        public abstract string Copyright();
+        public abstract CommandVersion Version();
+        public abstract CommandCopyright Copyright();
 
         #region Invoke
 
         /// <summary>
-        /// Runs this method when the command is invoked by the system or the user.
+        /// This method is ran when the command is invoked by the system or the user.
         /// </summary>
         /// <param name="invoker">The invoker class that initalized the command.</param>
         /// <param name="args">The arguments originally passed to the command.</param>
@@ -474,6 +500,7 @@ namespace WMCommandFramework2
 
         /// <summary>
         /// Runs when the command was terminated by the user or the parent code/system.
+        /// -NOT YET IMPLEMENTED!
         /// </summary>
         /// <param name="invoker">The invoker that initialized the command.</param>
         /// <param name="args">The arguments that where originally passed to the command.</param>
@@ -484,6 +511,9 @@ namespace WMCommandFramework2
         #region Command Functions
 
         //Tells the parent invoker to terminate the current/existing command.
+        /// <summary>
+        /// Terminates a running command. -NOT YET IMPLEMENTED!
+        /// </summary>
         public void Terminate()
         {
 
@@ -493,7 +523,7 @@ namespace WMCommandFramework2
     }
 }
 
-namespace WMCommandFramework2.Utilities
+namespace WMCommandFramework.Utilities
 {
     public static class ClassExtentions
     {
@@ -546,6 +576,11 @@ namespace WMCommandFramework2.Utilities
                     s += $"{splitValue}{sx}";
             }
             return s;
+        }
+
+        public static string ToString<T>(Returnable<T> returnable, char splitValue = ' ')
+        {
+            return ToString(returnable.ToArray(), splitValue);
         }
     }
 }

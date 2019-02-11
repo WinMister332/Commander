@@ -3,11 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Exe</OutputType>
+    <RootNamespace>WMCommandFramework</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' " />
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' " />
-  <ItemGroup>
-    <Folder Include="Commands\" />
-  </ItemGroup>
 </Project>

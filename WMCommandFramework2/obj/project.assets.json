@@ -11,7 +11,7 @@
           "lib/netstandard1.0/_._": {}
         }
       },
-      "NETStandard.Library/2.0.2": {
+      "NETStandard.Library/2.0.3": {
         "type": "package",
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.1.0"
@@ -30,10 +30,11 @@
   },
   "libraries": {
     "Microsoft.NETCore.Platforms/1.1.0": {
-      "sha512": "a/iSwnRZb+LHFk49hQOyThh/ZNC3vsbZsF65XwQIb863qF6msmhdQtxGXFL28Ob2NsCz/drEj28BJd/YPpLRBg==",
+      "sha512": "kz0PEW2lhqygehI/d6XsPCQzD7ff7gUJaVGPVETX611eadGsA3A877GdSlU0LRVMCTH/+P3o2iDTak+S08V2+A==",
       "type": "package",
       "path": "microsoft.netcore.platforms/1.1.0",
       "files": [
+        ".nupkg.metadata",
         ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
@@ -43,11 +44,12 @@
         "runtime.json"
       ]
     },
-    "NETStandard.Library/2.0.2": {
-      "sha512": "/C21I9UWRD38nCuJ2mm5mKsdvIHS/HKfJZTod8iyZIKCZ5tltlxvRtXmY1riTojblvTo+HPvAxMNNtso45DD1Q==",
+    "NETStandard.Library/2.0.3": {
+      "sha512": "st47PosZSHrjECdjeIzZQbzivYBJFv6P2nv4cj2ypdI204DO+vZ7l5raGMiX4eXMJ53RfOIg+/s4DHVZ54Nu2A==",
       "type": "package",
-      "path": "netstandard.library/2.0.2",
+      "path": "netstandard.library/2.0.3",
       "files": [
+        ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
@@ -167,35 +169,38 @@
         "build/netstandard2.0/ref/netstandard.dll",
         "build/netstandard2.0/ref/netstandard.xml",
         "lib/netstandard1.0/_._",
-        "netstandard.library.2.0.2.nupkg.sha512",
+        "netstandard.library.2.0.3.nupkg.sha512",
         "netstandard.library.nuspec"
       ]
     }
   },
   "projectFileDependencyGroups": {
     ".NETStandard,Version=v2.0": [
-      "NETStandard.Library >= 2.0.2"
+      "NETStandard.Library >= 2.0.3"
     ]
   },
   "packageFolders": {
-    "/Users/elisabethcallahanmitsch/.nuget/packages/": {}
+    "C:\\Users\\Admin\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/elisabethcallahanmitsch/Projects/WMCommandFramework2/WMCommandFramework2/WMCommandFramework2.csproj",
+      "projectUniqueName": "C:\\Users\\Admin\\Documents\\Git\\WMCommandFramework\\Dev\\WMCommandFramework2\\WMCommandFramework2.csproj",
       "projectName": "WMCommandFramework2",
-      "projectPath": "/Users/elisabethcallahanmitsch/Projects/WMCommandFramework2/WMCommandFramework2/WMCommandFramework2.csproj",
-      "packagesPath": "/Users/elisabethcallahanmitsch/.nuget/packages/",
-      "outputPath": "/Users/elisabethcallahanmitsch/Projects/WMCommandFramework2/WMCommandFramework2/obj",
+      "projectPath": "C:\\Users\\Admin\\Documents\\Git\\WMCommandFramework\\Dev\\WMCommandFramework2\\WMCommandFramework2.csproj",
+      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Admin\\Documents\\Git\\WMCommandFramework\\Dev\\WMCommandFramework2\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/elisabethcallahanmitsch/.config/NuGet/NuGet.Config"
+        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netstandard2.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Users\\Admin\\AppData\\Roaming\\Cosmos User Kit\\packages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -215,7 +220,7 @@
           "NETStandard.Library": {
             "suppressParent": "All",
             "target": "Package",
-            "version": "[2.0.2, )",
+            "version": "[2.0.3, )",
             "autoReferenced": true
           }
         },

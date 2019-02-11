@@ -7,3 +7,12 @@
 /Users/elisabethcallahanmitsch/Projects/WMCommandFramework2/WMCommandFramework2/bin/Debug/netstandard2.0/WMCommandFramework2.pdb
 /Users/elisabethcallahanmitsch/Projects/WMCommandFramework2/WMCommandFramework2/obj/Debug/netstandard2.0/WMCommandFramework2.dll
 /Users/elisabethcallahanmitsch/Projects/WMCommandFramework2/WMCommandFramework2/obj/Debug/netstandard2.0/WMCommandFramework2.pdb
+C:\Users\Admin\Documents\Git\WMCommandFramework\Dev\WMCommandFramework2\bin\Debug\netstandard2.0\WMCommandFramework2.deps.json
+C:\Users\Admin\Documents\Git\WMCommandFramework\Dev\WMCommandFramework2\bin\Debug\netstandard2.0\WMCommandFramework2.dll
+C:\Users\Admin\Documents\Git\WMCommandFramework\Dev\WMCommandFramework2\bin\Debug\netstandard2.0\WMCommandFramework2.pdb
+C:\Users\Admin\Documents\Git\WMCommandFramework\Dev\WMCommandFramework2\obj\Debug\netstandard2.0\WMCommandFramework2.csprojAssemblyReference.cache
+C:\Users\Admin\Documents\Git\WMCommandFramework\Dev\WMCommandFramework2\obj\Debug\netstandard2.0\WMCommandFramework2.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Documents\Git\WMCommandFramework\Dev\WMCommandFramework2\obj\Debug\netstandard2.0\WMCommandFramework2.AssemblyInfoInputs.cache
+C:\Users\Admin\Documents\Git\WMCommandFramework\Dev\WMCommandFramework2\obj\Debug\netstandard2.0\WMCommandFramework2.AssemblyInfo.cs
+C:\Users\Admin\Documents\Git\WMCommandFramework\Dev\WMCommandFramework2\obj\Debug\netstandard2.0\WMCommandFramework2.dll
+C:\Users\Admin\Documents\Git\WMCommandFramework\Dev\WMCommandFramework2\obj\Debug\netstandard2.0\WMCommandFramework2.pdb

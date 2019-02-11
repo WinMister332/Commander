@@ -1,5 +1,5 @@
 ﻿using System;
-namespace WMCommandFramework2
+namespace WMCommandFramework
 {
     public class AppName
     {

@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace WMCommandFramework2
+namespace WMCommandFramework
 {
     public class Returnable<T>
     {

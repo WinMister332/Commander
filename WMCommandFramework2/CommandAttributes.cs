@@ -3,7 +3,7 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace WMCommandFramework2.Attributes
+namespace WMCommandFramework.Attributes
 {
     [AttributeUsage(AttributeTargets.Class)]
     public abstract class CommandAttribute : Attribute
