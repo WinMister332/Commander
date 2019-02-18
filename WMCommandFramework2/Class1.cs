@@ -22,6 +22,9 @@ namespace WMCommandFramework
         public static CommandProcessor INSTANCE = null;
         private CommandInvoker invoker = null;
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="CommandProcessor"/> class.
+        /// </summary>
         public CommandProcessor()
         {
             INSTANCE = this;
@@ -29,6 +32,10 @@ namespace WMCommandFramework
             invoker.SetProcessor(this);
         }
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="CommandProcessor"/> class with the specified invoker.
+        /// </summary>
+        /// <param name="invoker">A pre-set invoker to utilize in this processor.</param>
         public CommandProcessor(CommandInvoker invoker)
         {
             INSTANCE = this;
@@ -39,11 +46,18 @@ namespace WMCommandFramework
             }
         }
 
+        /// <summary>
+        /// Get the <see cref="CommandInvoker"/> that was set by the processor.
+        /// </summary>
+        /// <returns>The <see cref="CommandInvoker"/> that was set.</returns>
         public CommandInvoker GetInvoker() => invoker;
 
         private ConsoleColor currentFGColor = ConsoleColor.White;
         private ConsoleColor currentBGColor = ConsoleColor.Blue;
 
+        /// <summary>
+        /// Gets or Sets whether debug output can be sent to the console.
+        /// </summary>
         public bool DebugMode
         {
             get => CommandUtilities.DebugMode;
@@ -61,13 +75,17 @@ namespace WMCommandFramework
             get => CommandUtilities.DefaultBackgroundColor;
             set => CommandUtilities.DefaultBackgroundColor = value;
         }
-
+        /// <summary>
+        /// Gets or Sets the name, version, and copyright information of the application this processor is bound to.
+        /// </summary>
         public AppName ApplicationName
         {
             get => CommandUtilities.ApplicationName;
             set => CommandUtilities.ApplicationName = value;
         }
-
+        /// <summary>
+        /// Gets or Sets a message to display before the input field.
+        /// </summary>
         public InputMessage Message
         {
             get => CommandUtilities.Message;
@@ -75,7 +93,9 @@ namespace WMCommandFramework
         }
 
         private bool closeProcessor = false;
-
+        /// <summary>
+        /// Stops looping the processor if the processor is looping.
+        /// </summary>
         public bool ExitProcessor
         {
             get => closeProcessor;
@@ -83,6 +103,9 @@ namespace WMCommandFramework
         }
 
         private bool displayEcho = true;
+        /// <summary>
+        /// Gets or Sets whether the preset InputMessage will be printed to the console.
+        /// </summary>
         public bool DisplayEcho
         {
             get => displayEcho;
@@ -102,6 +125,10 @@ namespace WMCommandFramework
             Console.Write("> ");
         }
 
+        /// <summary>
+        /// Processes all input sent to the console and makes sure it's not null before forwarding the command to the invoker.
+        /// </summary>
+        /// <param name="loopProcessor">Sets whether the processor will loop instead of terminating after checking a command.</param>
         public void Process(bool loopProcessor = false)
         {
             if (loopProcessor)
@@ -147,6 +174,9 @@ namespace WMCommandFramework
         private CommandProcessor commandProcessor;
         private List<Command> commands;
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="CommandInvoker"/> class.
+        /// </summary>
         public CommandInvoker()
         {
             commands = new List<Command>();
@@ -160,6 +190,10 @@ namespace WMCommandFramework
             });
         }
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="CommandInvoker"/> class
+        /// </summary>
+        /// <param name="capacity"></param>
         public CommandInvoker(int capacity)
         {
             commands = new List<Command>(capacity);
@@ -173,6 +207,10 @@ namespace WMCommandFramework
             });
         }
 
+        /// <summary>
+        /// Gets the processor that passes command data to this class. 
+        /// </summary>
+        /// <returns>The parent <see cref="CommandProcessor"/>.</returns>
         public CommandProcessor GetProcessor() => commandProcessor;
 
         /// <summary>
@@ -317,6 +355,10 @@ namespace WMCommandFramework
             Register(newCommand);
         }
 
+        /// <summary>
+        /// Parses and invokes the command and data passed to it. Will return an error if no valid command was found.
+        /// </summary>
+        /// <param name="input">The command and arguments to parse and invoke.</param>
         public void Invoke(string input)
         {
             //Split all data in the string by space.
@@ -365,10 +407,12 @@ namespace WMCommandFramework
                     if (cmd.Copyright() != CommandCopyright.EMPTY)
                         Console.WriteLine($"{cmd.Copyright()}");
                     cmd.OnInvoke(this, args);
+                    if (cmd.ThrowSyntax)
+                        Console.WriteLine($"USAGE:\nLEGEND: '[]: Optional', '<>: Required', '| or ||: Or', and '& and &&: And'.\n{cmd.Syntax()}");
                 }
                 else
                 {
-                    if (args.GetCommandAtPosition(0) == $"--version" || args.GetCommandAtPosition(0) == $"-ver")
+                    if (args.GetArgumentAtPosition(0) == $"--version" || args.GetArgumentAtPosition(0) == $"-ver")
                     {
                         if (cmd.Copyright() != null && cmd.Copyright() != CommandCopyright.EMPTY)
                         {
@@ -438,36 +482,424 @@ namespace WMCommandFramework
     {
         private List<string> args = null;
 
-        public CommandArguments(string[] strx)
+        internal CommandArguments(string[] strx)
         {
             args = new List<string>(strx.Length);
             foreach (string s in strx)
                 args.Add(s);
         }
 
-        public CommandArguments(List<string> strx)
+        internal CommandArguments(List<string> strx)
         {
             args = strx;
         }
 
         #region General Functions
 
+        /// <summary>
+        /// Returns the max number of arguments that where passed into the constructor.
+        /// </summary>
         public int Count => args.Count;
 
+        /// <summary>
+        /// Checks if there are NO arguments that where passed into the constructor.
+        /// </summary>
+        /// <returns>True, if there was nothing passed into the constructor.</returns>
         public bool IsEmpty()
         {
             if (Count <= 0) return true;
             return false;
         }
 
-        public string GetCommandAtPosition(int position)
+        /// <summary>
+        /// Gets the argument at the position in the argument array.
+        /// </summary>
+        /// <param name="position">The position in the argument array.</param>
+        /// <returns>The argument found.</returns>
+        public string GetArgumentAtPosition(int position)
         {
             if (!(IsEmpty()))
                 return args[position];
             return "";
         }
 
+        private int GetLength(List<string> args)
+        {
+            if (args.Count >= 1)
+                return (args.Count - 1);
+            else
+                return 0;
+        }
+
         #endregion
+
+        #region StartsWith
+
+        /// <summary>
+        /// Checks if the arg array starts with the specified value.
+        /// </summary>
+        /// <param name="value">The argument to check.</param>
+        /// <returns>True, if the argument was found.</returns>
+        public bool StartsWith(string value)
+        {
+            if (!IsEmpty())
+            {
+                if (args[0].Equals(value, StringComparison.CurrentCultureIgnoreCase))
+                    return true;
+            }
+            return false;
+        }
+        /// <summary>
+        /// Checks if the arg array starts with the specified switch.
+        /// </summary>
+        /// <param name="switchValue">The switch to check.</param>
+        /// <returns>True, if the switch was found.</returns>
+        public bool StartsWithSwitch(string switchValue)
+        {
+            if (StartsWith($"-{switchValue}"))
+                return true;
+            return false;
+        }
+        /// <summary>
+        /// Checks if the arg array starts with the specified conditional argument.
+        /// </summary>
+        /// <param name="value">The conditional argument to check.</param>
+        /// <returns>True, if the conditional argument was found.</returns>
+        public bool StartsWithConditional(string header)
+        {
+            if (StartsWithSwitch($"{header}:"))
+                return true;
+            return false;
+        }
+        /// <summary>
+        /// Checks if the arg array starts with the specified valued argument.
+        /// </summary>
+        /// <param name="value">The valued argument to check.</param>
+        /// <returns>True, if the valued argument was found.</returns>
+        public bool StartsWithValued(string key)
+        {
+            if (StartsWithSwitch($"{key}="))
+                return true;
+            return false;
+        }
+        /// <summary>
+        /// Checks if the arg array starts with the specified variable.
+        /// </summary>
+        /// <param name="value">The variable to check.</param>
+        /// <returns>True, if the variable was found.</returns>
+        public bool StartsWithVariable(Variable variable)
+        {
+            if (StartsWith(variable.ToString()))
+                return true;
+            return false;
+        }
+
+        #endregion
+
+        #region EndsWith
+
+        /// <summary>
+        /// Checks if the arg array ends with the specified value.
+        /// </summary>
+        /// <param name="value">The argument to check.</param>
+        /// <returns>True, if the argument was found.</returns>
+        public bool EndsWith(string value)
+        {
+            if (!IsEmpty())
+            {
+                var x = GetArgumentAtPosition(GetLength(args));
+                if ((x != "" || x != null) && x.Equals(value, StringComparison.CurrentCultureIgnoreCase))
+                    return true;
+            }
+            return false;
+        }
+        /// <summary>
+        /// Checks if the arg array ends with the specified switch.
+        /// </summary>
+        /// <param name="value">The switch to check.</param>
+        /// <returns>True, if the switch was found.</returns>
+        public bool EndsWithSwitch(string switchValue)
+        {
+            if (EndsWith($"-{switchValue}"))
+                return true;
+            return false;
+        }
+        /// <summary>
+        /// Checks if the arg array ends with the specified conditiona argument.
+        /// </summary>
+        /// <param name="value">The conditional argument to check.</param>
+        /// <returns>True, if the conditional argument was found.</returns>
+        public bool EndsWithConditional(string header)
+        {
+            if (EndsWithSwitch($"{header}:"))
+                return true;
+            return false;
+        }
+        /// <summary>
+        /// Checks if the arg array ends with the specified valued argument.
+        /// </summary>
+        /// <param name="value">The valued argument to check.</param>
+        /// <returns>True, if the valued argument was found.</returns>
+        public bool EndsWithValued(string key)
+        {
+            if (EndsWithSwitch($"{key}="))
+                return true;
+            return false;
+
+        }
+        /// <summary>
+        /// Checks if the arg array ends with the specified variable.
+        /// </summary>
+        /// <param name="value">The variable to check.</param>
+        /// <returns>True, if the variable was found.</returns>
+        public bool EndsWithVariable(Variable variable)
+        {
+            if (ContainsArgument(variable.ToString()))
+                return true;
+            return false;
+        }
+
+        #endregion
+
+        #region Contains
+
+        /// <summary>
+        /// Checks if the argument array contains the specified value.
+        /// </summary>
+        /// <param name="value">The value to check.</param>
+        /// <returns>True, if the value was found.</returns>
+        public bool ContainsArgument(string value)
+        {
+            if (!IsEmpty())
+            {
+                foreach (string s in args)
+                    if (s.Equals(value, StringComparison.CurrentCultureIgnoreCase))
+                        return true;
+
+            }
+            return false;
+        }
+        /// <summary>
+        /// Checks if the argument array contains the specified value.
+        /// </summary>
+        /// <param name="value">The value to check.</param>
+        /// <param name="position">The position within the array to check.</param>
+        /// <returns>True, if the value was found.</returns>
+        public bool ContainsArgument(int position, string value)
+        {
+            if (!IsEmpty())
+            {
+                var x = args[position];
+                if (!(x == "" || x == null) && x.Equals(value, StringComparison.CurrentCultureIgnoreCase))
+                    return true;
+            }
+            return false;
+        }
+        /// <summary>
+        /// Checks if the argument array contains the specified switch.
+        /// </summary>
+        /// <param name="value">The switch to check.</param>
+        /// <returns>True, if the switch was found.</returns>
+        public bool ContainsSwitch(string value)
+        {
+            var x = ContainsArgument($"-{value}");
+            if (x) return true;
+            return false;
+        }
+        /// <summary>
+        /// Checks if the argument array contains the specified switch.
+        /// </summary>
+        /// <param name="value">The switch to check.</param>
+        /// <param name="position">The position within the array to check.</param>
+        /// <returns>True, if the switch was found.</returns>
+        public bool ContainsSwitch(int position, string switchValue)
+        {
+            return ContainsArgument(position, $"-{switchValue}");
+        }
+        /// <summary>
+        /// Checks if the argument array contains the specified conditional argument.
+        /// </summary>
+        /// <param name="value">The conditional argument to check.</param>
+        /// <returns>True, if the conditional argument was found.</returns>
+        public bool ContainsConditional(string header)
+        {
+            var x = ContainsSwitch($"{header}:");
+            if (x) return true;
+            return false;
+
+        }
+        /// <summary>
+        /// Checks if the argument array contains the specified conditional argument.
+        /// </summary>
+        /// <param name="value">The conditional argument to check.</param>
+        /// <param name="position">The position within the array to check.</param>
+        /// <returns>True, if the conditional argument was found.</returns>
+        public bool ContainsConditional(int position, string header)
+        {
+            return ContainsSwitch(position, $"{header}:");
+        }
+        /// <summary>
+        /// Checks if the argument array contains the specified valued argument.
+        /// </summary>
+        /// <param name="value">The valued argument to check.</param>
+        /// <returns>True, if the valued argument was found.</returns>
+        public bool ContainsValuedArgument(string key)
+        {
+            var x = ContainsSwitch($"{header}=");
+            if (x) return true;
+            return false;
+        }
+        /// <summary>
+        /// Checks if the argument array contains the specified valued argument.
+        /// </summary>
+        /// <param name="value">The valued argument to check.</param>
+        /// <param name="position">The position within the array to check.</param>
+        /// <returns>True, if the valued argument was found.</returns>
+        public bool ContainsValuedArgument(int position, string key)
+        {
+            return ContainsSwitch(position, $"{key}=");
+        }
+        /// <summary>
+        /// Checks if the argument array contains the specified variable.
+        /// </summary>
+        /// <param name="value">The variable to check.</param>
+        /// <returns>True, if the variable was found.</returns>
+        public bool ContainsVariable(Variable variable)
+        {
+            var x = ContainsArgument(variable.ToString());
+            if (x) return true;
+            return false;
+        }
+        /// <summary>
+        /// Checks if the argument array contains the specified variable.
+        /// </summary>
+        /// <param name="value">The variable to check.</param>
+        /// <param name="position">The position within the array to check.</param>
+        /// <returns>True, if the variable was found.</returns>
+        public bool ContainsVariable(int position, Variable variable)
+        {
+            return ContainsArgument(position, variable.ToString());
+        }
+
+        #endregion
+
+        #region IndexOf
+
+        /// <summary>
+        /// Gets the index of the specified argument.
+        /// </summary>
+        /// <param name="value">The argument.</param>
+        /// <returns>The index of the specified argument.</returns>
+        public int IndexOf(string value)
+        {
+            if (!IsEmpty())
+            {
+                for (int i = 0; i < args.Count; i++)
+                {
+                    var x = args[i];
+                    if (x.Equals(value, StringComparison.CurrentCultureIgnoreCase))
+                        return i;
+                }
+            }
+            return 0;
+        }
+        /// <summary>
+        /// Gets the index of the specified switch.
+        /// </summary>
+        /// <param name="value">The switch.</param>
+        /// <returns>The index of the specified switch.</returns>
+        public int IndexOfSwitch(string switchValue)
+        {
+            return IndexOf($"-{switchValue}");
+        }
+        /// <summary>
+        /// Gets the index of the specified conditional argument.
+        /// </summary>
+        /// <param name="value">The conditional argument.</param>
+        /// <returns>The index of the specified conditional argument.</returns>
+        public int IndexOfConditional(string header)
+        {
+            return IndexOfSwitch($"{header}:");
+        }
+        /// <summary>
+        /// Gets the index of the specified valued argument.
+        /// </summary>
+        /// <param name="value">The valued argument.</param>
+        /// <returns>The index of the specified valued argument.</returns>
+        public int IndexOfValued(string key)
+        {
+            return IndexOfSwitch($"{key}=");
+        }
+        /// <summary>
+        /// Gets the index of the specified variable.
+        /// </summary>
+        /// <param name="value">The variable.</param>
+        /// <returns>The index of the specified variable.</returns>
+        public int IndexOfVariable(Variable variable)
+        {
+            return IndexOf(variable.ToString());
+        }
+
+        #endregion
+
+        #region ValueOf
+
+        /// <summary>
+        /// Gets the value of a conditional argument.
+        /// -header:value
+        /// </summary>
+        /// <param name="header">The header of the conditional argument.</param>
+        /// <returns>The value of the conditional.</returns>
+        public string ValueOfConditional(string header)
+        {
+            if (!IsEmpty())
+            {
+                var x = GetArgumentAtPosition(IndexOfConditional(header));
+                var xx = x.Split(':');
+                var val = xx[1];
+                return val;
+            }
+            return "";
+        }
+        /// <summary>
+        /// Gets the value of the valued argument.
+        /// -key=value;
+        /// </summary>
+        /// <param name="key">The key of the valued argument.</param>
+        /// <returns>The value of the valued.</returns>
+        public string ValueOfValued(string key)
+        {
+            if (!IsEmpty())
+            {
+                var x = GetArgumentAtPosition(IndexOfValued(key));
+                var xx = x.Split('=');
+                var val = xx[1];
+                return val;
+            }
+            return "";
+        }
+
+        #endregion
+
+        public class Variable
+        {
+            private char variableHeader = '$';
+            private string variableValue = "null";
+
+            public Variable(char header, string value)
+            {
+                variableHeader = header;
+                variableValue = value;
+            }
+
+            public char GetVariableHeader() => variableHeader;
+            public string GetVariableValue() => variableValue;
+
+            public override string ToString()
+            {
+                return $"{GetVariableHeader()}{GetVariableValue()}";
+            }
+        }
     }
 
     public abstract class Command
@@ -479,11 +911,41 @@ namespace WMCommandFramework
 
         internal void UnsetInvoker() => invoker = null;
 
+        /// <summary>
+        /// Refers to the primary name of the command.
+        /// </summary>
+        /// <returns>The primary name.</returns>
         public abstract string Name();
+        /// <summary>
+        /// Refers to the description of the command.
+        /// </summary>
+        /// <returns>The description.</returns>
         public abstract string Description();
+        /// <summary>
+        /// Refers to the secondary names of the command.
+        /// </summary>
+        /// <returns>The secondary names.</returns>
         public abstract string[] Aliases();
+        /// <summary>
+        /// Refers to the usage (syntax) of the command.
+        /// </summary>
+        /// <returns>The command syntax.</returns>
+        public abstract string Syntax();
+        /// <summary>
+        /// Refers to the version of the command.
+        /// </summary>
+        /// <returns>The version.</returns>
         public abstract CommandVersion Version();
+        /// <summary>
+        /// The copyright of the command.
+        /// </summary>
+        /// <returns>The copyright.</returns>
         public abstract CommandCopyright Copyright();
+
+        /// <summary>
+        /// Tells the command invoker to throw a syntax error.
+        /// </summary>
+        public bool ThrowSyntax { get; set; } = false;
 
         #region Invoke
 
