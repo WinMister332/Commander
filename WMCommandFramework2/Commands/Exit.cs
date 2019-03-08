@@ -19,6 +19,8 @@ namespace WMCommandFramework.Commands
             invoker.GetProcessor().ExitProcessor = true; //Terminates the current processor.
         }
 
+        public override string Syntax() => $"";
+
         public override CommandVersion Version() => new CommandVersion(1, 2, 1, "BETA");
     }
 }

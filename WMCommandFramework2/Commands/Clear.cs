@@ -19,6 +19,8 @@ namespace WMCommandFramework.Commands
             Console.Clear();
         }
 
+        public override string Syntax() => "";
+
         public override CommandVersion Version() => new CommandVersion(1,2,1, "BETA");
     }
 }

@@ -50,7 +50,7 @@ namespace WMCommandFramework.Commands
                 }
                 Console.WriteLine(s);
             }
-            else if (args.GetCommandAtPosition(0) == "-l" || args.GetCommandAtPosition(0) == "--list")
+            else if (args.GetArgumentAtPosition(0) == "-l" || args.GetArgumentAtPosition(0) == "--list")
             {
                 //Display a sorted or organized list.
                 string s = "";
@@ -88,7 +88,7 @@ namespace WMCommandFramework.Commands
             else
             {
                 //Display information about a specific command or it's alias.
-                var cmd = invoker.GetCommand(args.GetCommandAtPosition(0));
+                var cmd = invoker.GetCommand(args.GetArgumentAtPosition(0));
                 if (cmd != null)
                 {
                     Console.WriteLine(
@@ -117,9 +117,8 @@ namespace WMCommandFramework.Commands
             }
         }
 
-        public override CommandVersion Version()
-        {
-            return new CommandVersion(1,2,1, "BETA");
-        }
+        public override string Syntax() => $"[-l | command]";
+
+        public override CommandVersion Version() => new CommandVersion(1,2,1, "BETA");
     }
 }

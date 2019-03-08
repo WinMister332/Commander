@@ -89,7 +89,15 @@ namespace WMCommandFramework
         public InputMessage Message
         {
             get => CommandUtilities.Message;
-            set => CommandUtilities.Message = value;
+            set
+            {
+                if (!(value == null || value == InputMessage.EMPTY))
+                {
+                    value.SetProcessor(this);
+                    CommandUtilities.Message = value;
+                }
+                else CommandUtilities.Message = InputMessage.EMPTY;
+            }
         }
 
         private bool closeProcessor = false;
@@ -745,7 +753,7 @@ namespace WMCommandFramework
         /// <returns>True, if the valued argument was found.</returns>
         public bool ContainsValuedArgument(string key)
         {
-            var x = ContainsSwitch($"{header}=");
+            var x = ContainsSwitch($"{key}=");
             if (x) return true;
             return false;
         }

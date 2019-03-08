@@ -19,11 +19,11 @@ namespace WMCommandFramework.Commands
 
         public override void OnInvoke(CommandInvoker invoker, CommandArguments args)
         {
-            if (!(args.IsEmpty()) && args.GetCommandAtPosition(0) == "@off")
+            if (!(args.IsEmpty()) && args.GetArgumentAtPosition(0) == "@off")
             {
                 invoker.GetProcessor().DisplayEcho = false;
             }
-            else if (!(args.IsEmpty()) && args.GetCommandAtPosition(0) == "@on")
+            else if (!(args.IsEmpty()) && args.GetArgumentAtPosition(0) == "@on")
             {
                 invoker.GetProcessor().DisplayEcho = true;
             }
@@ -32,7 +32,7 @@ namespace WMCommandFramework.Commands
                 string s = "";
                 for (int i = 0; i < args.Count; i++)
                 {
-                    var x = args.GetCommandAtPosition(i);
+                    var x = args.GetArgumentAtPosition(i);
                     if (s == "" || s == null)
                         s = $"{x}";
                     else
@@ -43,6 +43,8 @@ namespace WMCommandFramework.Commands
             }
             else { }
         }
+
+        public override string Syntax() => "[message | @on/@off]\n@on: Turns echo on.\n@off: Turns echo off.";
 
         public override CommandVersion Version() => new CommandVersion(1, 2, 1, "BETA");
     }

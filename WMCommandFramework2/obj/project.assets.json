@@ -185,11 +185,11 @@
   "project": {
     "version": "1.2.1-BETA",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\Documents\\Git\\WMCommandFramework\\Dev\\WMCommandFramework2\\WMCommandFramework2.csproj",
+      "projectUniqueName": "C:\\Users\\Admin\\Documents\\Git\\WMCommandFramework\\WMCommandFramework2\\WMCommandFramework2.csproj",
       "projectName": "WMCommandFramework",
-      "projectPath": "C:\\Users\\Admin\\Documents\\Git\\WMCommandFramework\\Dev\\WMCommandFramework2\\WMCommandFramework2.csproj",
+      "projectPath": "C:\\Users\\Admin\\Documents\\Git\\WMCommandFramework\\WMCommandFramework2\\WMCommandFramework2.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\Documents\\Git\\WMCommandFramework\\Dev\\WMCommandFramework2\\obj\\",
+      "outputPath": "C:\\Users\\Admin\\Documents\\Git\\WMCommandFramework\\WMCommandFramework2\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
