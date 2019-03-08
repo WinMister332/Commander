@@ -31,7 +31,10 @@ namespace WMCommandFramework
         private void AddMessage(Message message)
         {
             if (!(message == null))
+            {
+                message.SetInputMessage(this);
                 messages.Add(message);
+            }
         }
 
         public void AddMessages(params Message[] messages)

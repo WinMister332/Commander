@@ -8,13 +8,13 @@ using WMCommandFramework.Utilities;
 
 namespace WMCommandFramework
 {
-    public static class CommandUtilities
+    internal static class CommandUtilities
     {
-        public static bool DebugMode { get; set; } = false;
-        public static ConsoleColor DefaultForegroundColor { get; set; } = ConsoleColor.White;
-        public static ConsoleColor DefaultBackgroundColor { get; set; } = ConsoleColor.Blue;
-        public static AppName ApplicationName { get; set; } = AppName.WMCommandFramework;
-        public static InputMessage Message { get; set; } = InputMessage.EMPTY;
+        internal static bool DebugMode { get; set; } = false;
+        internal static ConsoleColor DefaultForegroundColor { get; set; } = ConsoleColor.White;
+        internal static ConsoleColor DefaultBackgroundColor { get; set; } = ConsoleColor.Blue;
+        internal static AppName ApplicationName { get; set; } = AppName.WMCommandFramework;
+        internal static InputMessage Message { get; set; } = InputMessage.EMPTY;
     }
 
     public sealed class CommandProcessor
@@ -96,7 +96,12 @@ namespace WMCommandFramework
                     value.SetProcessor(this);
                     CommandUtilities.Message = value;
                 }
-                else CommandUtilities.Message = InputMessage.EMPTY;
+                else
+                {
+                    var x = InputMessage.EMPTY;
+                    x.SetProcessor(this);
+                    CommandUtilities.Message = x;
+                }
             }
         }
 

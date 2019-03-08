@@ -7,7 +7,7 @@
     <PackageId>WMCommandFramework</PackageId>
     <Authors>WinMister332</Authors>
     <Product>WMCommandFramework</Product>
-    <Version>1.2.1-BETA</Version>
+    <Version>1.2.2-BETA</Version>
     <Copyright>Copyright © Vanros Corperation, All Rights Reserved</Copyright>
     <PackageLicenseUrl>https://raw.githubusercontent.com/WinMister332/WMCommandFramework/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/WinMister332/WMCommandFramework/blob/master</PackageProjectUrl>
@@ -16,11 +16,9 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Description>A simplistic command framework designed to efficiently create commands and process/run the commands.z</Description>
-    <PackageReleaseNotes>Rewrote WMCommandFramework from scratch.
-- Removed: User, Group, and Permission management.
-- Removed: Input Management and Processing. (Wil be re-added later)
-+ Added:</PackageReleaseNotes>
+    <PackageReleaseNotes>Patched "NullReferenceException".</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/WinMister332/WMCommandFramework</RepositoryUrl>
+    <AssemblyVersion>1.2.2.0</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' " />
