@@ -24,3 +24,4 @@ C:\Users\Admin\Documents\Git\WMCommandFramework\WMCommandFramework2\obj\Debug\ne
 C:\Users\Admin\Documents\Git\WMCommandFramework\WMCommandFramework2\bin\Debug\netstandard2.0\WMCommandFramework2.deps.json
 C:\Users\Admin\Documents\Git\WMCommandFramework\WMCommandFramework2\bin\Debug\netstandard2.0\WMCommandFramework2.dll
 C:\Users\Admin\Documents\Git\WMCommandFramework\WMCommandFramework2\bin\Debug\netstandard2.0\WMCommandFramework2.pdb
+C:\Users\Admin\Documents\Git\WMCommandFramework\WMCommandFramework2\obj\Debug\netstandard2.0\WMCommandFramework2.csprojAssemblyReference.cache

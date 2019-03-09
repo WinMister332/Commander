@@ -54,11 +54,12 @@ namespace WMCommandFramework
             private static InputMessage inputMessage = null;
             private ConsoleColor color = ConsoleColor.White;
             private string text = "";
+            private bool setDefaultColor = false;
 
             public Message(string message)
             {
                 text = message;
-                color = inputMessage.GetProcessor().DefaultForegroundColor; 
+                setDefaultColor = true; 
             }
 
             public Message(string message, ConsoleColor color)
@@ -70,6 +71,8 @@ namespace WMCommandFramework
             internal void SetInputMessage(InputMessage message)
             {
                 inputMessage = message;
+                if (setDefaultColor)
+                    color = inputMessage.GetProcessor().DefaultForegroundColor;
             }
 
             public string GetMessage() => text;
@@ -85,6 +88,8 @@ namespace WMCommandFramework
             /// </summary>
             /// <value>The message containing the default console color.</value>
             public static Message ResetColor => new Message("", inputMessage.GetProcessor().DefaultForegroundColor);
+
+            public static Message Whitespace => new Message(" ");
         }
     }
 }
