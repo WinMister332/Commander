@@ -87,7 +87,7 @@ namespace WMCommandFramework
             /// Sets the message color to the default color.
             /// </summary>
             /// <value>The message containing the default console color.</value>
-            public static Message ResetColor => new Message("", inputMessage.GetProcessor().DefaultForegroundColor);
+            public static Message ResetColor => new Message("");
 
             public static Message Whitespace => new Message(" ");
         }
