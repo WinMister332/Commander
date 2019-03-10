@@ -18,9 +18,12 @@ namespace WMCommandFramework
 
         public InputMessage(params Message[] messages)
         {
+            if (this.messages == null)
+                this.messages = new List<Message>(messages.Length);
             //Check if not null or empty.
-            if (!(messages == null || messages.Length == 0 || messages == new Message[0]))
-                AddMessages(messages);
+            if (!(messages == null || messages.Length == 0))
+                foreach (Message message in messages)
+                    AddMessage(message);
         }
 
         internal void SetProcessor(CommandProcessor processor)
@@ -35,12 +38,6 @@ namespace WMCommandFramework
                 message.SetInputMessage(this);
                 messages.Add(message);
             }
-        }
-
-        public void AddMessages(params Message[] messages)
-        {
-            foreach (Message m in messages)
-                AddMessage(m);
         }
 
         public Message[] GetMessages() => messages.ToArray();
