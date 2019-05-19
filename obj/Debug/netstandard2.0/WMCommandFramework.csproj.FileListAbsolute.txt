@@ -1,0 +1,9 @@
+C:\Users\chris\source\repos\WMCommandFramework\bin\Debug\netstandard2.0\WMCommandFramework.deps.json
+C:\Users\chris\source\repos\WMCommandFramework\bin\Debug\netstandard2.0\WMCommandFramework.dll
+C:\Users\chris\source\repos\WMCommandFramework\bin\Debug\netstandard2.0\WMCommandFramework.pdb
+C:\Users\chris\source\repos\WMCommandFramework\obj\Debug\netstandard2.0\WMCommandFramework.csprojAssemblyReference.cache
+C:\Users\chris\source\repos\WMCommandFramework\obj\Debug\netstandard2.0\WMCommandFramework.csproj.CoreCompileInputs.cache
+C:\Users\chris\source\repos\WMCommandFramework\obj\Debug\netstandard2.0\WMCommandFramework.AssemblyInfoInputs.cache
+C:\Users\chris\source\repos\WMCommandFramework\obj\Debug\netstandard2.0\WMCommandFramework.AssemblyInfo.cs
+C:\Users\chris\source\repos\WMCommandFramework\obj\Debug\netstandard2.0\WMCommandFramework.dll
+C:\Users\chris\source\repos\WMCommandFramework\obj\Debug\netstandard2.0\WMCommandFramework.pdb
