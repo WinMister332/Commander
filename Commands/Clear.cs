@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using CMD = WMCommandFramework;
+using CMD = Commander;
 
-namespace WMCommandFramework.Commands
+namespace Commander.Commands
 {
     public class Clear : Command
     {

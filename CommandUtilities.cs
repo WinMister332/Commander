@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WMCommandFramework
+namespace Commander
 {
     public sealed class CommandUtilities
     {
         public static bool Debug { get; set; } = false;
         public static bool Echo { get; set; } = true;
-        public static AppName ApplicationName { get; set; } = AppName.WMCommandFramework;
+        public static AppName ApplicationName { get; set; } = AppName.Commander;
         public static TerminalMessage Message { get; set; } = TerminalMessage.EMPTY;
     }
 

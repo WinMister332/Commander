@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WMCommandFramework
+namespace Commander
 {
     public class AppName
     {
@@ -28,9 +28,9 @@ namespace WMCommandFramework
         public CommandCopyright GetCopyright() => copyright;
         public CommandVersion GetVersion() => version;
 
-        public static AppName WMCommandFramework => new AppName(
-            "WMCommandFramework",
-            CommandVersion.WMCommandFrameworkLatest,
+        public static AppName Commander => new AppName(
+            "Commander",
+            CommandVersion.CommanderLatest,
             CommandCopyright.VanrosCopyright
             );
     }

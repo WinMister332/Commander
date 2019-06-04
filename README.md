@@ -1,26 +1,24 @@
-# WMCommandFramework
-WMCommandFramework is a simple command framework and library designed for creating, managing, and processing commands for .NETStandard, .NETCore, and WinForms-based applications.
-
-NOTE: The next update will NOT be under the name of "WMCommandFramework" (WMCMDX), instead the name will be reviced to "Commander" (Command Utilities Library) will indirectly replace WMCMDX, inorder to support all useful code vitial to creating a custom command line in .NETCore, .NETStandard, WinForms/WPF, and even the COSMOS Operating System Kernel library, although indirectly.
+# Commander
+Commander contains useful code vital to creating a custom command-line or terminal in .NETCore, .NETStandard, WinForms/WPF, and a [COSMOS](http://www.github.com/CosmosOS/Cosmos) KERNEL. 
 
 In COMMANDER V1 Update I will re-release the NUGET library, (Hopefully with an icon), and released along side 'Desmin', a custom windows kernel planned to support all native windows commands, AuraOS commands, DuskOS commands, and some linux commands (such as 'git').
 
 If you'd like to help with either project, send me an email at 'vanrosservice@gmail.com' or send me a DM on Gitter (Same GitHub Name/Username).
 
 ## GitHub
-[![GitHub Last Commit (master)](https://img.shields.io/github/last-commit/WinMister332/WMCommandFramework/master.svg?style=popout-square)](https://github.com/WinMister332/WMCommandFramework/graphs/commit-activity)
-[![GitHub issues](https://img.shields.io/github/issues/winmister332/wmcommandframework.svg?style=popout-square)](https://github.com/WinMister332/WMCommandFramework/issues)
-[![GitHub forks](https://img.shields.io/github/forks/winmister332/wmcommandframework.svg?style=popout-square)](https://github.com/WinMister332/WMCommandFramework/network/members)
-[![GitHub top language](https://img.shields.io/github/languages/top/winmister332/wmcommandframework.svg?style=popout-square)](https://github.com/WinMister332/WMCommandFramework/search?l=c%23)
-[![GitHub pull requests](https://img.shields.io/github/issues-pr/winmister332/wmcommandframework.svg?style=popout-square)](https://github.com/WinMister332/WMCommandFramework/pulls?q=is%3Aopen+is%3Apr)
-[![license](https://img.shields.io/github/license/winmister332/wmcommandframework.svg?style=popout-square)](https://github.com/WinMister332/WMCommandFramework/blob/master/LICENSE)
+[![GitHub Last Commit (master)](https://img.shields.io/github/last-commit/WinMister332/Commander/master.svg?style=popout-square)](https://github.com/WinMister332/Commander/graphs/commit-activity)
+[![GitHub issues](https://img.shields.io/github/issues/winmister332/Commander.svg?style=popout-square)](https://github.com/WinMister332/Commander/issues)
+[![GitHub forks](https://img.shields.io/github/forks/winmister332/Commander.svg?style=popout-square)](https://github.com/WinMister332/Commander/network/members)
+[![GitHub top language](https://img.shields.io/github/languages/top/winmister332/Commander.svg?style=popout-square)](https://github.com/WinMister332/Commander/search?l=c%23)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/winmister332/Commander.svg?style=popout-square)](https://github.com/WinMister332/Commander/pulls?q=is%3Aopen+is%3Apr)
+[![license](https://img.shields.io/github/license/winmister332/Commander.svg?style=popout-square)](https://github.com/WinMister332/Commander/blob/master/LICENSE)
 
 ### Quick Setup
-Inorder to use use commands within WMCommandFramework you must setup your class to use the CommandFramework.
+Inorder to use use commands within Commander you must setup your class to use the CommandFramework.
 
 Firstly, import the framework to your class.
 Add the following line to the 'using' section of your class.
-`using CMD = WMCommandFramework`
+`using CMD = Commander`
 
 Once you've added that line to your class, you must invoke the CommandProcessor and utilize it.
 Above your constructor, add this field.

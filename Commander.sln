@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28721.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WMCommandFramework", "WMCommandFramework.csproj", "{0F8DF89E-EDB1-43FC-B48E-D317CF9D07C8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesminTerminal-TEST", "..\DesminTerminal-TEST\DesminTerminal-TEST.csproj", "{A11C6065-B1D6-4517-99BF-77C8F1D9A1A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commander", "Commander.csproj", "{0F8DF89E-EDB1-43FC-B48E-D317CF9D07C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +15,6 @@ Global
 		{0F8DF89E-EDB1-43FC-B48E-D317CF9D07C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F8DF89E-EDB1-43FC-B48E-D317CF9D07C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F8DF89E-EDB1-43FC-B48E-D317CF9D07C8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A11C6065-B1D6-4517-99BF-77C8F1D9A1A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A11C6065-B1D6-4517-99BF-77C8F1D9A1A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A11C6065-B1D6-4517-99BF-77C8F1D9A1A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A11C6065-B1D6-4517-99BF-77C8F1D9A1A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

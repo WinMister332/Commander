@@ -185,11 +185,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\chris\\source\\repos\\WMCommandFramework\\WMCommandFramework.csproj",
-      "projectName": "WMCommandFramework",
-      "projectPath": "C:\\Users\\chris\\source\\repos\\WMCommandFramework\\WMCommandFramework.csproj",
+      "projectUniqueName": "C:\\Users\\chris\\Documents\\Git\\Commander\\Commander.csproj",
+      "projectName": "Commander",
+      "projectPath": "C:\\Users\\chris\\Documents\\Git\\Commander\\Commander.csproj",
       "packagesPath": "C:\\Users\\chris\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\chris\\source\\repos\\WMCommandFramework\\obj\\",
+      "outputPath": "C:\\Users\\chris\\Documents\\Git\\Commander\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

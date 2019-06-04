@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WMCommandFramework
+namespace Commander
 {
     public class CommandVersion
     {
@@ -105,7 +105,7 @@ namespace WMCommandFramework
             return false;
         }
 
-        public static CommandVersion WMCommandFrameworkLatest
+        public static CommandVersion CommanderLatest
             => new CommandVersion(0, 2, 2, "DEV");
     }
 }

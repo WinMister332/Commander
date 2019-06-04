@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WMCommandFramework
+namespace Commander
 {
     public class CommandProcessor
     {
-        public static CommandProcessor DEFAULT_INSTANCE = null;
+        private List<string> previousInput = null;
+
+        public static CommandProcessor DEFAULT_INSTANCE = new CommandProcessor();
         public bool Echo
         {
             get => CommandUtilities.Echo;
@@ -52,6 +54,7 @@ namespace WMCommandFramework
             Message.SetProcessor(this);
             Console.InputEncoding = Encoding.GetEncoding(65001);
             Console.OutputEncoding = Encoding.GetEncoding(65001);
+            previousInput = new List<string>(15);
         }
 
         public CommandProcessor(CommandInvoker invoker)
@@ -93,16 +96,22 @@ namespace WMCommandFramework
                         WriteMessage();
                         var input = Console.ReadLine();
                         if (!(input == null && input == ""))
+                        {
                             //Forward to Invoker.
                             invoker.Invoke(input);
+                            AppendHistory(input);
+                        }
                     }
                     else
                     {
                         //Read Commands Only.
                         var input = Console.ReadLine();
                         if (!(input == null && input == ""))
+                        {
                             //Forward to Invoker.
                             invoker.Invoke(input);
+                            AppendHistory(input);
+                        }
                     }
                 }
             }
@@ -115,16 +124,22 @@ namespace WMCommandFramework
                     WriteMessage();
                     var input = Console.ReadLine();
                     if (!(input == null && input == ""))
+                    {
                         //Forward to Invoker.
                         invoker.Invoke(input);
+                        AppendHistory(input);
+                    }
                 }
                 else
                 {
                     //Read Commands Only.
                     var input = Console.ReadLine();
                     if (!(input == null && input == ""))
+                    {
                         //Forward to Invoker.
                         invoker.Invoke(input);
+                        AppendHistory(input);
+                    }
                 }
             }
         }
@@ -148,5 +163,30 @@ namespace WMCommandFramework
 
         public void ExitProcessor()
             => Running = false;
+
+		public CommandInvoker GetInvoker() => invoker;
+
+        private void AppendHistory(string value)
+        {
+            if (previousInput.Count == previousInput.Capacity)
+            {
+                //...
+                List<string> xl = new List<string>(previousInput.Count);
+                for (int i = 0; i < previousInput.Count; i++)
+                {
+                    if (i > 1)
+                    {
+                        xl.Add(previousInput[i]);
+                    }
+                }
+                previousInput = xl;
+                previousInput.Add(value);
+            }
+            else
+            {
+                //...
+                previousInput.Add(value);
+            }
+        }
     }
 }

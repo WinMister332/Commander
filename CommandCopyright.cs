@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WMCommandFramework
+namespace Commander
 {
     public class CommandCopyright
     {
@@ -14,7 +14,7 @@ namespace WMCommandFramework
             if (!(developer == null || developer == ""))
                 this.developer = developer;
             else
-                this.developer = "WMCommandFramework";
+                this.developer = "Commander";
 
             yearDeveloped = DateTime.Now.Year;
         }
@@ -24,7 +24,7 @@ namespace WMCommandFramework
             if (!(developer == null || developer == ""))
                 this.developer = developer;
             else
-                this.developer = "WMCommandFramework";
+                this.developer = "Commander";
 
             if (year <= 1980)
                 yearDeveloped = DateTime.Now.Year;
