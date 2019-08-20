@@ -1,7 +1,7 @@
 # Commander
 Commander contains useful code vital to creating a custom command-line or terminal in .NETCore, .NETStandard, WinForms/WPF, and a [COSMOS](http://www.github.com/CosmosOS/Cosmos) KERNEL. 
 
-In COMMANDER V1 Update I will re-release the NUGET library, (Hopefully with an icon), and released along side 'Desmin', a custom windows kernel planned to support all native windows commands, AuraOS commands, DuskOS commands, and some linux commands (such as 'git').
+In COMMANDER V1 Update I will re-release the NUGET library, (Hopefully with an icon), and released along side 'Desmin', a custom windows console planned to support all native windows commands, AuraOS commands, DuskOS commands, and some linux commands (such as 'git').
 
 If you'd like to help with either project, send me an email at 'vanrosservice@gmail.com' or send me a DM on Gitter (Same GitHub Name/Username).
 
