@@ -37,7 +37,7 @@ processor.DebugMode = true;
 //Change this to what you need for your application.
 processor.Message = new CMD.InputMessage(
   new CMD.InputMessage.Message("$Administrator", Color.Yellow),
-  new CMD.InputMessage.Message("$Desmin", Color.DarkAqua),
+  new CMD.InputMessage.Message("@Desmin", Color.DarkAqua),
   new CMD.InputMessage.Message(" "),
   new CMD.InputMessage.Message("/", Color.Green),
   CMD.InputMessage.Message.ResetColor
