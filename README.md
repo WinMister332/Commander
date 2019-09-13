@@ -14,7 +14,7 @@ If you'd like to help with either project, send me an email at 'vanrosservice@gm
 [![license](https://img.shields.io/github/license/winmister332/Commander.svg?style=popout-square)](https://github.com/WinMister332/Commander/blob/master/LICENSE)
 
 ### Quick Setup
-Inorder to use use commands within Commander you must setup your class to use the CommandFramework.
+Inorder to use use commands within Commander you must setup your class to use the Commander Framework.
 
 Firstly, import the framework to your class.
 Add the following line to the 'using' section of your class.
